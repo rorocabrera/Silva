@@ -1,9 +1,10 @@
+const { json } = require('express');
 const User = require('../models/user');
 
 module.exports = {
 
     register(req, res) {
-
+        console.log(' se recibe peticion post a la direccion correcta');
         const user = req.body; //VIENE DE FLUTTER
         User.create(user, (err, data) => {
             if (err) {

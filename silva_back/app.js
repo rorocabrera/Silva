@@ -29,13 +29,6 @@ app.set('port', port);
 
 usersRoutes(app);
 
-const users = require('./routes/userRoutes');
-
-
-
-
-
-
 
 server.listen(port, '192.168.0.111' || 'localhost', () =>
     console.log('Aplicación escuchando en puerto ' + port));
