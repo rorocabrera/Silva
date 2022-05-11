@@ -1,225 +1,211 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:silva_admin/Pages/Login/loginController.dart';
+import 'package:silva_admin/Pages/register/registerController.dart';
 import 'package:silva_admin/Utils/colors.dart';
-import 'package:snippet_coder_utils/FormHelper.dart';
-import 'package:snippet_coder_utils/ProgressHUD.dart';
 
 class RegisterPage extends StatefulWidget {
-  RegisterPage({Key? key}) : super(key: key);
-
   @override
   State<RegisterPage> createState() => _RegisterPageState();
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  bool isApiLoading = false;
-  bool hidePassword = true;
-  GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
-
-  String? username;
-  String? password;
-  String? password2;
-  String? email;
+  RegisterController cnt = Get.put(RegisterController());
+  bool c = true;
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-          backgroundColor: myBlue,
-          body: ProgressHUD(
-              child: Form(
-                key: globalFormKey,
-                child: _registerUI(context),
+    return Scaffold(
+        bottomNavigationBar: _textDontHaveAccout(),
+        body: Stack(
+          children: [
+            _backgroundCover(),
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  _imageCover(),
+                  _textApp(),
+                  _boxFore(context),
+                ],
               ),
-              inAsyncCall: isApiLoading,
-              opacity: 0.3,
-              key: UniqueKey())),
+            ),
+          ],
+        ));
+  }
+
+  Widget _backgroundCover() {
+    return Container(
+      width: double.infinity,
+      height: Get.height * 0.4,
+      color: Colors.blueGrey,
     );
   }
 
-  Widget _registerUI(BuildContext context) {
-    return SingleChildScrollView(
-        child: Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      decoration: const BoxDecoration(
-          gradient: LinearGradient(
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-        colors: [myBlue, mBColor],
-      )),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            height: Get.height * 0.2,
-            child: Align(
-                alignment: Alignment.center,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: Image.asset('assets/images/Silva.png',
-                      width: 250, fit: BoxFit.contain),
-                )),
+  Widget _textApp() {
+    return Padding(
+        padding: const EdgeInsets.only(top: 8.0),
+        child: Text(
+          "Sistema Integral de Localización y Validación Administrativa",
+          style: TextStyle(fontWeight: FontWeight.bold, color: myBlack),
+        ));
+  }
+
+  Widget _boxFore(BuildContext context) {
+    return Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(4)),
+            color: Colors.white,
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: Colors.black54,
+                  blurRadius: 15,
+                  offset: Offset(0, 0.75)),
+            ]),
+        margin: EdgeInsets.only(top: Get.height * 0.1, left: 50, right: 50),
+        height: Get.height * 0.60,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              _textYourInfo(),
+              _textFieldEmail(),
+              _textFieldName(),
+              _textFieldPassword(),
+              _textFieldConfirmPassword(),
+              _buttonLogic(),
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20, bottom: 30, top: 50),
-            child: Text("Registrar",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                    color: Colors.white)),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: FormHelper.inputFieldWidget(
-              context,
-              "Email",
-              "ejemplo@email.com",
-              (onValidateVal) {
-                if (onValidateVal.isEmpty) {
-                  return "Campo obligatorio";
-                }
-                return null;
+        ));
+  }
+
+  Widget _textFieldEmail() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+      child: TextField(
+        textInputAction: TextInputAction.done,
+        keyboardType: TextInputType.emailAddress,
+        decoration: InputDecoration(
+            labelText: 'Correo electrónico',
+            border: OutlineInputBorder(),
+            prefixIcon: Icon(Icons.email)),
+      ),
+    );
+  }
+
+  Widget _textFieldName() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+      child: TextField(
+        textInputAction: TextInputAction.done,
+        keyboardType: TextInputType.emailAddress,
+        decoration: InputDecoration(
+            labelText: 'Nombre de usuario',
+            border: OutlineInputBorder(),
+            prefixIcon: Icon(Icons.person)),
+      ),
+    );
+  }
+
+  Widget _textFieldPassword() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+      child: TextField(
+          obscureText: c,
+          textInputAction: TextInputAction.done,
+          keyboardType: TextInputType.emailAddress,
+          decoration: InputDecoration(
+            labelText: 'Password',
+            border: OutlineInputBorder(),
+            prefixIcon: Icon(Icons.lock),
+            suffixIcon: IconButton(
+              icon: c ? Icon(Icons.visibility) : Icon(Icons.visibility_off),
+              onPressed: () {
+                setState(() {
+                  c = !c;
+                });
               },
-              (onSavedVal) {
-                email = onSavedVal;
-              },
-              showPrefixIcon: true,
-              borderFocusColor: Colors.white,
-              prefixIconColor: Colors.white.withOpacity(0.6),
-              borderColor: Colors.white,
-              textColor: Colors.white,
-              prefixIcon: const Icon(Icons.email),
-              hintColor: Colors.white.withOpacity(0.6),
-              borderRadius: 10,
             ),
-          ),
-          FormHelper.inputFieldWidget(
-            context,
-            "Nombre de usuario",
-            "nombre",
-            (onValidateVal) {
-              if (onValidateVal.isEmpty) {
-                return "Campo obligatorio";
-              }
-              return null;
-            },
-            (onSavedVal) {
-              username = onSavedVal;
-            },
-            showPrefixIcon: true,
-            borderFocusColor: Colors.white,
-            prefixIconColor: Colors.white.withOpacity(0.6),
-            borderColor: Colors.white,
-            textColor: Colors.white,
-            prefixIcon: const Icon(Icons.person),
-            hintColor: Colors.white.withOpacity(0.6),
-            borderRadius: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: FormHelper.inputFieldWidget(context, "password", "Password",
-                (onValidateVal) {
-              if (onValidateVal.isEmpty) {
-                return "Campo obligatorio";
-              }
-              return null;
-            }, (onSavedVal) {
-              password = onSavedVal;
-            },
-                showPrefixIcon: true,
-                borderFocusColor: Colors.white,
-                prefixIconColor: Colors.white.withOpacity(0.6),
-                borderColor: Colors.white,
-                textColor: Colors.white,
-                prefixIcon: const Icon(Icons.lock),
-                hintColor: Colors.white.withOpacity(0.6),
-                borderRadius: 10,
-                obscureText: hidePassword,
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      hidePassword = !hidePassword;
-                    });
-                  },
-                  color: Colors.white.withOpacity(0.7),
-                  icon: Icon(
-                      hidePassword ? Icons.visibility_off : Icons.visibility),
-                )),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: FormHelper.inputFieldWidget(
-              context,
-              "password",
-              "Confirme su Password",
-              (onValidateVal) {
-                if (onValidateVal.isEmpty) {
-                  return "Campo obligatorio";
-                }
-                return null;
-              },
-              (onSavedVal) {
-                password2 = onSavedVal;
-              },
-              showPrefixIcon: true,
-              borderFocusColor: Colors.white,
-              prefixIconColor: Colors.white.withOpacity(0.6),
-              borderColor: Colors.white,
-              textColor: Colors.white,
-              prefixIcon: const Icon(Icons.lock),
-              hintColor: Colors.white.withOpacity(0.6),
-              borderRadius: 10,
-              obscureText: hidePassword,
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Center(
-            child: FormHelper.submitButton("Login", () {},
-                btnColor: myBlue,
-                txtColor: Colors.white,
-                borderColor: Colors.white,
-                borderRadius: 10),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Center(
-              child: Text(
-            "O",
-            style: TextStyle(
-                fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),
           )),
-          SizedBox(
-            height: 20,
+    );
+    ;
+  }
+
+  Widget _textFieldConfirmPassword() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+      child: TextField(
+          obscureText: c,
+          textInputAction: TextInputAction.done,
+          keyboardType: TextInputType.emailAddress,
+          decoration: InputDecoration(
+            labelText: 'Confirme su Password',
+            border: OutlineInputBorder(),
+            prefixIcon: Icon(Icons.lock),
+          )),
+    );
+    ;
+  }
+
+  Widget _textYourInfo() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20, bottom: 10),
+      child: Text(
+        "Ingrese sus datos",
+        style: TextStyle(fontWeight: FontWeight.bold, color: myBlack),
+      ),
+    );
+  }
+
+  Widget _buttonLogic() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+      width: double.infinity,
+      height: 40,
+      child: ElevatedButton(
+          onPressed: () {},
+          child: Text(
+            'Regístrate',
+            style: TextStyle(color: myBlack, fontWeight: FontWeight.bold),
+          )),
+    );
+  }
+
+  Widget _textDontHaveAccout() {
+    return Container(
+      height: Get.height * 0.1,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'Ya estás registrado?',
+            style: TextStyle(color: Colors.black),
           ),
-          Center(
-            child: RichText(
-              text: TextSpan(
-                  style: const TextStyle(
-                    color: Colors.grey,
-                    fontSize: 14.0,
-                  ),
-                  children: <TextSpan>[
-                    TextSpan(text: "Ya está registrado?  "),
-                    TextSpan(
-                        text: "Login",
-                        style: TextStyle(
-                            color: Colors.white,
-                            decoration: TextDecoration.underline),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            Get.toNamed("/");
-                          })
-                  ]),
+          SizedBox(width: 7),
+          GestureDetector(
+            onTap: () {
+              cnt.gotoLoginPage();
+            },
+            child: Text(
+              'Ingresa Aquí',
+              style: TextStyle(
+                  color: Colors.blueGrey,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold),
             ),
-          ),
+          )
         ],
       ),
-    ));
+    );
+  }
+
+  Widget _imageCover() {
+    return SafeArea(
+      child: Container(
+          margin: EdgeInsets.only(top: 30),
+          alignment: Alignment.center,
+          child: Image.asset(
+            'assets/images/Silva.png',
+            width: 300,
+          )),
+    );
   }
 }

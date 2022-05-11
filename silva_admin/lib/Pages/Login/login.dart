@@ -1,209 +1,176 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:silva_admin/Pages/Login/loginController.dart';
 import 'package:silva_admin/Utils/colors.dart';
-import 'package:snippet_coder_utils/FormHelper.dart';
-import 'package:snippet_coder_utils/ProgressHUD.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key? key}) : super(key: key);
-
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool isApiLoading = false;
-  bool hidePassword = true;
-  GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
-
   LoginController cnt = Get.put(LoginController());
+  bool c = true;
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-          backgroundColor: myBlue,
-          body: ProgressHUD(
-              child: Form(
-                key: globalFormKey,
-                child: _loginUI(context),
+    return Scaffold(
+        bottomNavigationBar: _textDontHaveAccout(),
+        body: Stack(
+          children: [
+            _backgroundCover(),
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  _imageCover(),
+                  _textApp(),
+                  _boxFore(context),
+                ],
               ),
-              inAsyncCall: isApiLoading,
-              opacity: 0.3,
-              key: UniqueKey())),
+            ),
+          ],
+        ));
+  }
+
+  Widget _backgroundCover() {
+    return Container(
+      width: double.infinity,
+      height: Get.height * 0.4,
+      color: Colors.blueGrey,
     );
   }
 
-  Widget _loginUI(BuildContext context) {
-    return SingleChildScrollView(
-        child: Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      decoration: const BoxDecoration(
-          gradient: LinearGradient(
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-        colors: [myBlue, mBColor],
-      )),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            height: 200,
-            child: Align(
-                alignment: Alignment.center,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: Image.asset('assets/images/Silva.png',
-                      width: 250, fit: BoxFit.contain),
-                )),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 20, bottom: 30, top: 50),
-            child: Text("Login",
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                    color: Colors.white)),
-          ),
-          FormHelper.inputFieldWidget(
-            context,
-            "Email",
-            "ejemplo@email.com",
-            (onValidateVal) {
-              if (onValidateVal.isEmpty) {
-                return "Campo obligatorio";
-              }
-              return null;
-            },
-            (onSavedVal) {
-              cnt.emailController = onSavedVal;
-            },
-            showPrefixIcon: true,
-            borderFocusColor: Colors.white,
-            prefixIconColor: Colors.white.withOpacity(0.6),
-            borderColor: Colors.white,
-            textColor: Colors.white,
-            prefixIcon: const Icon(Icons.email),
-            hintColor: Colors.white.withOpacity(0.6),
-            borderRadius: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0),
-            child: FormHelper.inputFieldWidget(context, "password", "Password",
-                (onValidateVal) {
-              if (onValidateVal.isEmpty) {
-                return "Campo obligatorio";
-              }
-              return null;
-            }, (onSavedVal) {
-              cnt.passwordController = onSavedVal;
-            },
-                showPrefixIcon: true,
-                borderFocusColor: Colors.white,
-                prefixIconColor: Colors.white.withOpacity(0.6),
-                borderColor: Colors.white,
-                textColor: Colors.white,
-                prefixIcon: const Icon(Icons.lock),
-                hintColor: Colors.white.withOpacity(0.6),
-                borderRadius: 10,
-                obscureText: hidePassword,
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      hidePassword = !hidePassword;
-                    });
-                  },
-                  color: Colors.white.withOpacity(0.7),
-                  icon: Icon(
-                      hidePassword ? Icons.visibility_off : Icons.visibility),
-                )),
-          ),
-          Align(
-              alignment: Alignment.bottomRight,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 10.0, right: 25),
-                child: RichText(
-                  text: TextSpan(
-                      style: const TextStyle(
-                        color: Colors.grey,
-                        fontSize: 14.0,
-                      ),
-                      children: <TextSpan>[
-                        TextSpan(
-                            text: "Olvido su clave?",
-                            style: TextStyle(
-                                color: Colors.white,
-                                decoration: TextDecoration.underline),
-                            recognizer: TapGestureRecognizer()..onTap = () {})
-                      ]),
-                ),
-              )),
-          SizedBox(
-            height: 20,
-          ),
-          Center(
-            child: FormHelper.submitButton("Login", () {
-              if (validateAndSave()) {
-                cnt.login();
-                setState(() {
-                  isApiLoading = true;
-                });
-              } else {}
-            },
-                btnColor: myBlue,
-                txtColor: Colors.white,
-                borderColor: Colors.white,
-                borderRadius: 10),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Center(
-              child: Text(
-            "O",
-            style: TextStyle(
-                fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),
-          )),
-          SizedBox(
-            height: 20,
-          ),
-          Center(
-            child: RichText(
-              text: TextSpan(
-                  style: const TextStyle(
-                    color: Colors.grey,
-                    fontSize: 14.0,
-                  ),
-                  children: <TextSpan>[
-                    TextSpan(text: "No se ha registrado?  "),
-                    TextSpan(
-                        text: "Regístrese",
-                        style: TextStyle(
-                            color: Colors.white,
-                            decoration: TextDecoration.underline),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            cnt.gotoRegisterPage();
-                          })
-                  ]),
-            ),
-          ),
-        ],
-      ),
-    ));
+  Widget _textApp() {
+    return Padding(
+        padding: const EdgeInsets.only(top: 8.0),
+        child: Text(
+          "Sistema Integral de Localización y Validación Administrativa",
+          style: TextStyle(fontWeight: FontWeight.bold, color: myBlack),
+        ));
   }
 
-  bool validateAndSave() {
-    final form = globalFormKey.currentState;
-    if (form!.validate()) {
-      form.save();
-      return true;
-    } else {
-      return false;
-    }
+  Widget _boxFore(BuildContext context) {
+    return Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(4)),
+            color: Colors.white,
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: Colors.black54,
+                  blurRadius: 15,
+                  offset: Offset(0, 0.75)),
+            ]),
+        margin: EdgeInsets.only(top: Get.height * 0.1, left: 50, right: 50),
+        height: Get.height * 0.45,
+        child: Column(
+          children: [
+            _textYourInfo(),
+            _textFieldEmail(),
+            _textFieldPassword(),
+            _buttonLogic(),
+          ],
+        ));
+  }
+
+  Widget _textFieldEmail() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+      child: TextField(
+        textInputAction: TextInputAction.done,
+        keyboardType: TextInputType.emailAddress,
+        decoration: InputDecoration(
+            labelText: 'Correo electrónico',
+            border: OutlineInputBorder(),
+            prefixIcon: Icon(Icons.email)),
+      ),
+    );
+  }
+
+  Widget _textFieldPassword() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+      child: TextField(
+          obscureText: c,
+          textInputAction: TextInputAction.done,
+          keyboardType: TextInputType.emailAddress,
+          decoration: InputDecoration(
+            labelText: 'Password',
+            border: OutlineInputBorder(),
+            prefixIcon: Icon(Icons.lock),
+            suffixIcon: IconButton(
+              icon: c ? Icon(Icons.visibility) : Icon(Icons.visibility_off),
+              onPressed: () {
+                setState(() {
+                  c = !c;
+                });
+              },
+            ),
+          )),
+    );
+    ;
+  }
+
+  Widget _textYourInfo() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 40, bottom: 10),
+      child: Text(
+        "Ingresa esta información",
+        style: TextStyle(fontWeight: FontWeight.bold, color: myBlack),
+      ),
+    );
+  }
+
+  Widget _buttonLogic() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+      width: double.infinity,
+      height: 40,
+      child: ElevatedButton(
+          onPressed: () {},
+          child: Text(
+            'Login',
+            style: TextStyle(color: myBlack, fontWeight: FontWeight.bold),
+          )),
+    );
+  }
+
+  Widget _textDontHaveAccout() {
+    return Container(
+      height: Get.height * 0.1,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'No estás registrado?',
+            style: TextStyle(color: Colors.black),
+          ),
+          SizedBox(width: 7),
+          GestureDetector(
+            onTap: () {
+              cnt.gotoRegisterPage();
+            },
+            child: Text(
+              'Registrate Aquí',
+              style: TextStyle(
+                  color: Colors.blueGrey,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _imageCover() {
+    return SafeArea(
+      child: Container(
+          margin: EdgeInsets.only(top: 30),
+          alignment: Alignment.center,
+          child: Image.asset(
+            'assets/images/Silva.png',
+            width: 300,
+          )),
+    );
   }
 }
