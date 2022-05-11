@@ -1,0 +1,12 @@
+USE nominaM
+
+CREATE TABLE users(
+
+	id BIGINT PRIMARY KEY AUTO_INCREMENT,
+	email VARCHAR(50) NOT NULL UNIQUE,
+    name VARCHAR(50) NOT NULL,
+    password VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP(0) NOT NULL,
+    updated_at TTMESTAMP(0) NOT NULL
+
+);

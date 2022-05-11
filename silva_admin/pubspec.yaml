@@ -22,6 +22,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   http: ^0.13.4
   snippet_coder_utils: ^1.0.12
+  get: ^4.6.1
 
 dev_dependencies:
   flutter_test:
