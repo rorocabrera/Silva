@@ -14,17 +14,21 @@ const port = process.env.PORT || 5050;
 
 const usersRoutes = require('./routes/userRoutes');
 
+const passport = require('passport');
+
 app.use(express.json());
 app.use(logger('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
+app.use(passport.initialize());
+
+app.use(passport.session());
 app.disable('x-powered-by');
 
-
+require('./config/passport')(passport);
 
 
 app.set('port', port);
-
 
 
 usersRoutes(app);
@@ -34,17 +38,22 @@ server.listen(port, '192.168.0.111' || 'localhost', () =>
     console.log('Aplicación escuchando en puerto ' + port));
 
 
-app.get('/', (req, res) => {
-    res.send('ruta raiz de backend');
-})
 
-app.get('/test', (req, res) => {
-    res.send('ruta test');
-})
 
 
 app.use((err, req, res, next) => {
     console.log(err);
     res.status(err.status || 500).send(err.stack);
+
+
 });
+
+app.get('/', (req, res) => {
+    res.send('ruta raiz de backend');
+})
+
+module.exports = {
+    app: app,
+    server: server
+}
 

@@ -81,6 +81,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
       child: TextField(
+        controller: cnt.emailController,
         textInputAction: TextInputAction.done,
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
@@ -95,6 +96,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
       child: TextField(
+        controller: cnt.nameController,
         textInputAction: TextInputAction.done,
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
@@ -109,6 +111,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
       child: TextField(
+          controller: cnt.passwordController,
           obscureText: c,
           textInputAction: TextInputAction.done,
           keyboardType: TextInputType.emailAddress,
@@ -133,6 +136,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
       child: TextField(
+          controller: cnt.confirmPasswordController,
           obscureText: c,
           textInputAction: TextInputAction.done,
           keyboardType: TextInputType.emailAddress,
@@ -150,7 +154,7 @@ class _RegisterPageState extends State<RegisterPage> {
       padding: const EdgeInsets.only(top: 20, bottom: 10),
       child: Text(
         "Ingrese sus datos",
-        style: TextStyle(fontWeight: FontWeight.bold, color: myBlack),
+        style: TextStyle(color: myBlack),
       ),
     );
   }
@@ -161,7 +165,9 @@ class _RegisterPageState extends State<RegisterPage> {
       width: double.infinity,
       height: 40,
       child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            cnt.register();
+          },
           child: Text(
             'Regístrate',
             style: TextStyle(color: myBlack, fontWeight: FontWeight.bold),

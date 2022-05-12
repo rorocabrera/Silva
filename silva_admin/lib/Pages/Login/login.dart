@@ -76,6 +76,7 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
       child: TextField(
+        controller: cnt.emailController,
         textInputAction: TextInputAction.done,
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
@@ -90,6 +91,7 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
       child: TextField(
+          controller: cnt.passwordController,
           obscureText: c,
           textInputAction: TextInputAction.done,
           keyboardType: TextInputType.emailAddress,
@@ -114,8 +116,8 @@ class _LoginPageState extends State<LoginPage> {
     return Padding(
       padding: const EdgeInsets.only(top: 40, bottom: 10),
       child: Text(
-        "Ingresa esta información",
-        style: TextStyle(fontWeight: FontWeight.bold, color: myBlack),
+        "Ingrese esta información",
+        style: TextStyle(color: myBlack),
       ),
     );
   }
@@ -126,7 +128,9 @@ class _LoginPageState extends State<LoginPage> {
       width: double.infinity,
       height: 40,
       child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            cnt.login();
+          },
           child: Text(
             'Login',
             style: TextStyle(color: myBlack, fontWeight: FontWeight.bold),
