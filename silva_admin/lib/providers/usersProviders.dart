@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:silva_admin/environment/environment.dart';
+import 'package:silva_admin/models/response_api.dart';
 import 'dart:convert';
 
 import '../models/user.dart';
@@ -18,10 +19,16 @@ class UsersProvider extends GetConnect {
     );
   }
 
-  Future<Response> create1(User user) async {
-    Response response = await post('$url/create', user.toJson(), headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
-    });
-    return response;
+  Future<ResponseApi> login(String email, String password) async {
+    http.Response response = await http.post(
+      Uri.parse('$url/login'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: json.encode({'email': email, 'password': password}),
+    );
+
+    ResponseApi responseApi = ResponseApi.fromJson(json.decode(response.body));
+    return responseApi;
   }
 }

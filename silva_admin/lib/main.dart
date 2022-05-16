@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:silva_admin/Pages/home/home_page.dart';
 import 'package:silva_admin/Pages/power.dart';
+import 'package:silva_admin/Pages/roles/roles_pages.dart';
 import 'package:silva_admin/Pages/supervisores.dart';
 import 'package:silva_admin/Utils/colors.dart';
+import 'package:silva_admin/models/user.dart';
 
 import 'Pages/Login/login.dart';
 import 'Pages/register/register.dart';
 
-void main() => runApp(MyApp());
+User userSession = User.fromJson(GetStorage().read('user') ?? {});
+
+void main() async {
+  await GetStorage.init();
+  runApp(MyApp());
+}
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -28,11 +37,13 @@ class _MyAppState extends State<MyApp> {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Nomina',
-      initialRoute: "/",
+      initialRoute: userSession.id != null ? "/home" : "/",
       theme: ThemeData(primarySwatch: Colors.blueGrey),
       getPages: [
         GetPage(name: "/", page: () => LoginPage()),
         GetPage(name: "/register", page: () => RegisterPage()),
+        GetPage(name: "/home", page: () => HomePage()),
+        GetPage(name: "/roles", page: () => RolesPage()),
       ],
       navigatorKey: Get.key,
     );
