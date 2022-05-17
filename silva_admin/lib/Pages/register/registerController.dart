@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:silva_admin/models/response_api.dart';
 import 'package:silva_admin/models/user.dart';
 import 'package:silva_admin/providers/usersProviders.dart';
 import 'package:http/http.dart' as http;
@@ -38,6 +40,16 @@ class RegisterController extends GetxController {
       );
 
       http.Response response = await usersProvider.create(user);
+      var jsonResponse = jsonDecode(response.body);
+      if (response.statusCode == 201) {
+        ResponseApi resp = await usersProvider.login(email, password);
+        if (resp.success == true) {
+          GetStorage().write('user', resp.data);
+          Get.offNamedUntil('/roles', (route) => false);
+        } else {
+          Get.snackbar('Login Faliido', resp.message ?? '');
+        }
+      }
 
       print('RESPONSE: ${response.body}');
     }

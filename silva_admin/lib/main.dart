@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:silva_admin/Pages/home/home_page.dart';
-import 'package:silva_admin/Pages/power.dart';
 import 'package:silva_admin/Pages/roles/roles_pages.dart';
-import 'package:silva_admin/Pages/supervisores.dart';
 import 'package:silva_admin/Utils/colors.dart';
 import 'package:silva_admin/models/user.dart';
 

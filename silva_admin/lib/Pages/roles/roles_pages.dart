@@ -12,18 +12,41 @@ class RolesPage extends StatelessWidget {
         appBar: AppBar(
           title: Text('Seleccionar el rol'),
         ),
-        body: ListView(
-          children: cnt.user.roles != null
-              ? cnt.user.roles!.map((Rol rol) {
-                  return Text(rol.name ?? '');
-                }).toList()
-              : [],
+        body: Container(
+          margin: EdgeInsets.symmetric(vertical: Get.height * 0.17),
+          child: ListView(
+            children: cnt.user.roles != null
+                ? cnt.user.roles!.map((Rol rol) {
+                    return _cardRol(rol);
+                  }).toList()
+                : [],
+          ),
         ));
   }
 
   Widget _cardRol(Rol rol) {
+    String _path = '';
+    switch (rol.id) {
+      case "1":
+        _path = 'assets/images/administrador.png';
+        break;
+      case "2":
+        _path = 'assets/images/supervisor.png';
+        break;
+      default:
+        _path = 'assets/images/personal.png';
+    }
+
     return Column(children: [
-      Container(),
+      Text(
+        rol.name ?? '',
+        style: TextStyle(fontSize: 16, color: Colors.black),
+      ),
+      Container(
+        margin: EdgeInsets.only(bottom: 15),
+        height: 100,
+        child: Image.asset(_path),
+      ),
     ]);
   }
 }
