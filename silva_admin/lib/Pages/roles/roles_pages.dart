@@ -37,16 +37,21 @@ class RolesPage extends StatelessWidget {
         _path = 'assets/images/personal.png';
     }
 
-    return Column(children: [
-      Text(
-        rol.name ?? '',
-        style: TextStyle(fontSize: 16, color: Colors.black),
-      ),
-      Container(
-        margin: EdgeInsets.only(bottom: 15),
-        height: 100,
-        child: Image.asset(_path),
-      ),
-    ]);
+    return GestureDetector(
+      onTap: () {
+        cnt.goToPageRol(rol);
+      },
+      child: Column(children: [
+        Text(
+          rol.name ?? '',
+          style: TextStyle(fontSize: 16, color: Colors.black),
+        ),
+        Container(
+          margin: EdgeInsets.only(bottom: 15),
+          height: 100,
+          child: Image.asset(_path),
+        ),
+      ]),
+    );
   }
 }

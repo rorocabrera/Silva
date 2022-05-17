@@ -68,6 +68,7 @@ VALUES (
 CREATE TABLE user_has_roles(
     id_user BIGINT NOT NULL,
     id_rol BIGINT NOT NULL,
+    nivel INT NOT NULL,
     created_at TIMESTAMP(0) NOT NULL,
     updated_at TIMESTAMP(0) NOT NULL,
     FOREIGN KEY(id_user) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -76,31 +77,3 @@ CREATE TABLE user_has_roles(
 
 );
 
-
-
-SELECT
-        U.id,
-        U.email,
-        U.name,
-        U.password,
-        JSON_ARRAYAGG(
-        JSON_OBJECT(
-            'id', R.id,
-            'name', R.name,
-            'route', R.route
-            
-        ) ) AS roles
-    FROM
-        users AS U
-    INNER JOIN
-    	user_has_roles AS UHR
-    ON
-    	UHR.id_user = U.id
-    INNER JOIN
-    	roles AS R
-    ON
-    	UHR.id_rol = R.id
-    WHERE
-        email = 'elrodrix@gmail.com'
-    GROUP BY
-        U.id

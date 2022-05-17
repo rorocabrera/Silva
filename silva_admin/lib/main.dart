@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:silva_admin/Pages/home/home_page.dart';
+import 'package:silva_admin/Pages/roles/Administrador/Modulos/AdminModulosPage.dart';
+import 'package:silva_admin/Pages/roles/Personal/Modulos/personal_modulos_page.dart';
+import 'package:silva_admin/Pages/roles/Supervisor/Obras/List/supervisor_obras_list_page.dart';
 import 'package:silva_admin/Pages/roles/roles_pages.dart';
 import 'package:silva_admin/Utils/colors.dart';
 import 'package:silva_admin/models/user.dart';
@@ -42,6 +45,11 @@ class _MyAppState extends State<MyApp> {
         GetPage(name: "/register", page: () => RegisterPage()),
         GetPage(name: "/home", page: () => HomePage()),
         GetPage(name: "/roles", page: () => RolesPage()),
+        GetPage(name: "/admin/options", page: () => AdminModulosPage()),
+        GetPage(
+            name: "/superv/options/obras/list",
+            page: () => SupervisorObrasListPage()),
+        GetPage(name: "/personal/options", page: () => PersonalModulosPage()),
       ],
       navigatorKey: Get.key,
     );
