@@ -10,6 +10,13 @@ class RolesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          actions: [
+            IconButton(
+                onPressed: () {
+                  cnt.signOut();
+                },
+                icon: Icon(Icons.door_sliding)),
+          ],
           title: Text('Seleccionar el rol'),
         ),
         body: Container(

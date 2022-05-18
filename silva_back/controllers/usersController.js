@@ -36,6 +36,7 @@ module.exports = {
                 const data = {
                     id: `${myUser.id}`,
                     name: myUser.name,
+                    level: myUser.level,
                     email: myUser.email,
                     session_token: `JWT ${token}`,
                     roles: JSON.parse(myUser.roles)
@@ -88,15 +89,32 @@ module.exports = {
                     data: data
                 });
 
-
             })
+        })
 
+    },
+    list(res) {
 
-
+        User.getAll(async (err, userList) => {
+            console.log('error ', err);
+            console.log('usuario ', userList);
+            if (err) {
+                return res.status(501).json({
+                    success: false,
+                    message: 'Hubo un error en la obtención de datos',
+                    error: err
+                });
+            }
+            if (!userList) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'No hay datos para mostrar'
+                });
+            }
 
 
         })
 
-    }
+    },
 
 }

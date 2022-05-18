@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:silva_admin/Pages/roles/Supervisor/Obras/List/supervisor_obras_list_controller.dart';
 
-class SupervisorObrasListPage extends StatelessWidget {
-  SupervisorObrasListController cnt = Get.put(SupervisorObrasListController());
+class SupervPage extends StatelessWidget {
+  SupervController cnt = Get.put(SupervController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          title: Text('Modulo Supervisor'),
+        ),
         body: Center(
-      child: Text("Supervisor Obras List Page"),
-    ));
+          child: Text("Pagina Supervisor"),
+        ));
   }
 }

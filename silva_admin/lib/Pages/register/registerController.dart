@@ -30,9 +30,6 @@ class RegisterController extends GetxController {
     print('Password ${password}');
 
     if (isValidForm(email, name, password, confirmPassword)) {
-      Get.snackbar(
-          'Formulario valido', 'Estas listo para enviar la peticion Http');
-
       User user = User(
         email: email,
         name: name,
@@ -45,7 +42,12 @@ class RegisterController extends GetxController {
         ResponseApi resp = await usersProvider.login(email, password);
         if (resp.success == true) {
           GetStorage().write('user', resp.data);
-          Get.offNamedUntil('/roles', (route) => false);
+          var roles = resp.toJson()["data"]["roles"];
+          if (roles.length == 1) {
+            Get.offNamedUntil("/pers/opt", (route) => false);
+          } else {
+            Get.offNamedUntil('/roles', (route) => false);
+          }
         } else {
           Get.snackbar('Login Faliido', resp.message ?? '');
         }

@@ -28,7 +28,13 @@ class LoginController extends GetxController {
 
       if (responseApi.success == true) {
         GetStorage().write('user', responseApi.data);
-        goToRolesPage();
+        var roles = responseApi.toJson()["data"]["roles"];
+        print(roles);
+        if (roles.length == 1) {
+          Get.offNamedUntil("/pers/opt", (route) => false);
+        } else {
+          goToRolesPage();
+        }
       } else {
         Get.snackbar('Login Faliido', responseApi.message ?? '');
       }

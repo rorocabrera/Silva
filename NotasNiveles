@@ -1,0 +1,14 @@
+
+
+
+   1 ->   Registros (Inventario)
+   2 ->   Registros (Equipos)
+   3 ->   Registros (Perfiles)
+   4.>    Registros (Master)
+   5.>    Obras
+   6.-¿>  Obras + Registros(Master)
+   0 o 9 .->  Master
+   
+   Si es (1, 2 o 3) pasa directamente a Registros correspondiente
+   
+   Si es 5 pasa directamente a Obras

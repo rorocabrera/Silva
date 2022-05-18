@@ -10,6 +10,7 @@ User.findById = (id, result) => {
             U.id,
             U.email,
             U.name,
+            U.level,
             U.password,
             JSON_ARRAYAGG(
             JSON_OBJECT(
@@ -61,6 +62,7 @@ User.findByEmail = (email, result) => {
         U.id,
         U.email,
         U.name,
+        U.level,
         U.password,
         JSON_ARRAYAGG(
         JSON_OBJECT(
@@ -72,7 +74,7 @@ User.findByEmail = (email, result) => {
     FROM
         users AS U
     INNER JOIN
-    	user_has_roles AS UHR
+    	user_has_roles AS UHR  
     ON
     	UHR.id_user = U.id
     INNER JOIN
@@ -111,11 +113,12 @@ User.create = async (user, result) => {
             users(
                 email,
                 name,
+                level,
                 password,
                 created_at,
                 updated_at
             )
-        VALUES(?, ?, ? , ? , ?)
+        VALUES(?, ?, ? , ?, ? , ?)
     
     
     `;
@@ -126,6 +129,7 @@ User.create = async (user, result) => {
         [
             user.email,
             user.name,
+            1,
             hash,
             new Date(),
             new Date()
@@ -145,6 +149,48 @@ User.create = async (user, result) => {
         }
 
     )
+}
+
+User.getAll = (result) => {
+    const sql = `
+        SELECT
+        U.id,
+        U.email,
+        U.name,
+        U.level,
+        JSON_ARRAYAGG(
+        JSON_OBJECT(
+            'id', CONVERT(R.id, char),
+            'name', R.name,
+            'route', R.route
+            
+        ) ) AS roles
+    FROM
+        users AS U
+    INNER JOIN
+    	user_has_roles AS UHR  
+    ON
+    	UHR.id_user = U.id
+    INNER JOIN
+    	roles AS R
+    ON
+    	UHR.id_rol = R.id
+   
+    `;
+    db.query(sql, (err, res) => {
+        if (err) {
+            console.log('Error: ', err)
+            result(err, null);
+        }
+        else {
+            console.log('Usuarios: ', res);
+            result(null, res);
+
+        }
+
+    })
+
+
 }
 
 module.exports = User;

@@ -1,0 +1,3 @@
+En silva_back/models/user.js  
+    users.findbyEmail quisiera entender bien como concatena las tablas insertando 
+    una tabla como un JSON

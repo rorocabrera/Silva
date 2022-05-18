@@ -11,6 +11,7 @@ class User {
       {this.id,
       this.email,
       this.name,
+      this.level,
       this.password,
       this.sessionToken,
       this.roles});
@@ -18,6 +19,7 @@ class User {
   String? id;
   String? email;
   String? name;
+  int? level;
   String? password;
   String? sessionToken;
   List<Rol>? roles = [];
@@ -26,6 +28,7 @@ class User {
       id: json["id"],
       email: json["email"],
       name: json["name"],
+      level: json["level"],
       password: json["password"],
       sessionToken: json["session_token"],
       roles: json["roles"] == null
@@ -36,6 +39,7 @@ class User {
         "id": id,
         "email": email,
         "name": name,
+        "level": level,
         "password": password,
         "session_token": sessionToken,
         "roles": roles
