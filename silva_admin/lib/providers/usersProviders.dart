@@ -31,4 +31,18 @@ class UsersProvider extends GetConnect {
     ResponseApi responseApi = ResponseApi.fromJson(json.decode(response.body));
     return responseApi;
   }
+
+  Future<List<User>> listAllusers() async {
+    http.Response response = await http.get(Uri.parse('$url/list'));
+    var jsonResponse = jsonDecode(response.body);
+
+    if (response.statusCode == 401 || response.statusCode == 501) {
+      Get.snackbar("Petición denegada", "Error en la petición");
+      return [];
+    }
+
+    List<User> users = User.fromJsonList(jsonResponse);
+
+    return users;
+  }
 }

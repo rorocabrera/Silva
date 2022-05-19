@@ -93,11 +93,12 @@ module.exports = {
         })
 
     },
-    list(res) {
+    list(req, res) {
 
-        User.getAll(async (err, userList) => {
-            console.log('error ', err);
-            console.log('usuario ', userList);
+        User.getAll((err, userList) => {
+            jsonResult = JSON.parse(JSON.stringify(userList));
+            console.log('error en UsersController/list(res) ', err);
+            console.log('UserList en UsersController/list(res): ', jsonResult);
             if (err) {
                 return res.status(501).json({
                     success: false,
@@ -111,6 +112,7 @@ module.exports = {
                     message: 'No hay datos para mostrar'
                 });
             }
+            return res.status(201).json(jsonResult);
 
 
         })

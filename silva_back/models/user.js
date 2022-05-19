@@ -138,7 +138,7 @@ User.create = async (user, result) => {
         (err, res) => {
             if (err) {
                 console.log('Error: ', err)
-                result(err, null);
+                result(err, null); elpropio
             }
             else {
                 console.log('Id del nuevo usuario: ', res.insertId);
@@ -153,18 +153,18 @@ User.create = async (user, result) => {
 
 User.getAll = (result) => {
     const sql = `
-        SELECT
-        U.id,
+    SELECT
+        CONVERT(U.id, char) as id,
         U.email,
         U.name,
         U.level,
+        
         JSON_ARRAYAGG(
         JSON_OBJECT(
             'id', CONVERT(R.id, char),
-            'name', R.name,
-            'route', R.route
+            'name', R.name
             
-        ) ) AS roles
+        ) )  AS roles
     FROM
         users AS U
     INNER JOIN
@@ -175,16 +175,17 @@ User.getAll = (result) => {
     	roles AS R
     ON
     	UHR.id_rol = R.id
-   
+    GROUP BY
+        U.id, U.name;
     `;
-    db.query(sql, (err, res) => {
+    db.query(sql, (err, data) => {
         if (err) {
             console.log('Error: ', err)
             result(err, null);
         }
         else {
-            console.log('Usuarios: ', res);
-            result(null, res);
+
+            result(null, data);
 
         }
 
