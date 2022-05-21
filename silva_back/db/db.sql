@@ -1,17 +1,17 @@
-USE nomina
+CREATE DATABASE [IF NOT EXISTS] nomina
 
-CREATE TABLE users(
+CREATE TABLE IF NOT EXISTS users(
 
 	id BIGINT PRIMARY KEY AUTO_INCREMENT,
 	email VARCHAR(50) NOT NULL UNIQUE,
-    name VARCHAR(50) NOT NULL,
+    name VARCHAR(50) NOT NULL UNIQUE,
     level INT NOT NULL,
     password VARCHAR(100) NOT NULL,
     created_at TIMESTAMP(0) NOT NULL,
     updated_at TTMESTAMP(0) NOT NULL
 
 );
-CREATE TABLE user_has_roles(
+CREATE TABLE IF NOT EXISTS user_has_roles(
     id_user BIGINT NOT NULL,
     id_rol BIGINT NOT NULL,
     created_at TIMESTAMP(0) NOT NULL,
@@ -24,16 +24,16 @@ CREATE TABLE user_has_roles(
 
 
 
-CREATE TABLE roles(
+CREATE TABLE IF NOT EXISTS roles(
     	id BIGINT PRIMARY KEY AUTO_INCREMENT,
-        name VARCHAR(90) NOT NULL,
+        name VARCHAR(90) NOT NULL UNIQUE,
         route VARCHAR(100) NOT NULL,
         created_at TIMESTAMP(0) NOT NULL,
         updated_at TIMESTAMP(0) NOT NULL
 );
 
 
-INSERT INTO roles(
+INSERT INTO IF NOT EXISTS roles(
     name,
     route,
     created_at,
