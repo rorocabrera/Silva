@@ -56,7 +56,7 @@ class _MyAppState extends State<MyApp> {
         GetPage(name: "/admin/Reg/Inv", page: () => AdminRegInvPage()),
         GetPage(name: "/admin/Reg/Eqp", page: () => AdminRegEqpPage()),
         GetPage(name: "/admin/Reg/Perf", page: () => AdminRegPerfPage()),
-        GetPage(name: "/admin/Reg/Opt", page: () => RegistrosOptPage()),
+        GetPage(name: "/admin/Reg/Opt", page: () => RegistrosModulosPage()),
         GetPage(name: "/admin/opt/users", page: () => AdminUsersPage()),
       ],
       navigatorKey: Get.key,

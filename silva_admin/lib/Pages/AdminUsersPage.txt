@@ -1,0 +1,81 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:silva_admin/Pages/roles/Administrador/Modulos/Usuarios/AdminUsersController.dart';
+import 'package:silva_admin/Utils/colors.dart';
+
+import '../../../../../models/user.dart';
+
+class AdminUsersPage extends StatelessWidget {
+  AdminUsersController cnt = Get.put(AdminUsersController());
+
+  @override
+  Widget build(BuildContext context) {
+    List<User> users = cnt.users;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Modulo Administración de Usuarios'),
+        actions: [
+          IconButton(
+              onPressed: () {
+                cnt.signOut();
+              },
+              icon: Icon(Icons.door_sliding)),
+        ],
+      ),
+      body: Obx(() => Center(
+            child: _buildUsers(users),
+          )),
+    );
+  }
+
+  Widget _buildUsers(List<User> users) {
+    ColorsPicker colorPicked = ColorsPicker();
+    return ListView.builder(
+        itemCount: users.length,
+        itemBuilder: (context, index) {
+          final user = users[index];
+          return Card(
+            child: Row(
+              children: [
+                Container(
+                  width: Get.width * 0.5,
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: colorPicked.rolesLevelColor(
+                          user.roles ?? [], user.level ?? 1),
+                      child: _letterAvatar(user.name ?? ''),
+                    ),
+                    title: Text(user.email ?? ''),
+                    subtitle: Text(user.name ?? ''),
+                  ),
+                ),
+                ListView.builder(
+                    itemCount: user.roles?.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: ((context, index) {
+                      Icon icon = Icon(Icons.person);
+                      final rol = user.roles?[index];
+                      if (rol?.id == "1") {
+                        icon = Icon(Icons.settings);
+                      }
+                      if (rol?.id == "2") {
+                        icon = Icon(Icons.check);
+                      }
+
+                      return Column(
+                        children: [
+                          Flexible(child: icon),
+                          Flexible(child: Text(rol?.name ?? '')),
+                        ],
+                      );
+                    }))
+              ],
+            ),
+          );
+        });
+  }
+
+  Widget _letterAvatar(String name) {
+    return Text(name[0].toUpperCase());
+  }
+}
