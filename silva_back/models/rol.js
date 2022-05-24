@@ -32,5 +32,31 @@ Rol.create = (id_user, id_rol, result) => {
         });
 }
 
+Rol.delete = (id_user, id_rol, result) => {
+    const sql = `
+            DELETE FROM 
+                user_has_roles 
+                WHERE id_user = ?
+                AND id_rol = ?
+
+            `;
+
+    db.query(
+        sql,
+        [id_user, id_rol],
+        (err, res) => {
+            if (err) {
+                console.log('Error: ', err)
+                result(err, null);
+            }
+            else {
+                console.log('Rol eliminado', res.insertId);
+                result(null, res.insertId);
+
+            }
+
+        });
+}
+
 module.exports = Rol;
 

@@ -7,7 +7,7 @@ User.findById = (id, result) => {
     const sql = `
     
     SELECT
-            U.id,
+        CONVERT(U.id, char) as id,
             U.email,
             U.name,
             U.level,
@@ -30,7 +30,7 @@ User.findById = (id, result) => {
         ON
             UHR.id_rol = R.id
         WHERE
-            id = ?
+            U.id = ?
         GROUP BY
             U.id
 
@@ -45,7 +45,7 @@ User.findById = (id, result) => {
                 result(err, null);
             }
             else {
-                console.log('Usuario Obtenido', user);
+
                 result(null, user);
 
             }

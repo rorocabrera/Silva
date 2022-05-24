@@ -32,6 +32,39 @@ class UsersProvider extends GetConnect {
     return responseApi;
   }
 
+  Future<ResponseApi> addRol(String id, String rol) async {
+    http.Response response = await http.post(
+      Uri.parse('$url/addRol'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: json.encode({'id': id, 'rol': rol}),
+    );
+
+    ResponseApi responseApi = ResponseApi.fromJson(json.decode(response.body));
+    return responseApi;
+  }
+
+  Future<ResponseApi> deleteRol(String id, String rol) async {
+    http.Response response = await http.delete(
+      Uri.parse('$url/deleteRol'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: json.encode({'id': id, 'rol': rol}),
+    );
+
+    ResponseApi responseApi = ResponseApi.fromJson(json.decode(response.body));
+    return responseApi;
+  }
+
+  Future<User> updateUser(String id) async {
+    http.Response response = await http.get(Uri.parse('$url/$id'));
+    var jsonResponse = json.decode(response.body);
+    jsonResponse["roles"] = jsonDecode(jsonResponse["roles"]);
+    return User.fromJson(jsonResponse);
+  }
+
   Future<List<User>> listAllusers() async {
     http.Response response = await http.get(Uri.parse('$url/list'));
     var jsonResponse = jsonDecode(response.body);

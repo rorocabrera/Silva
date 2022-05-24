@@ -7,6 +7,32 @@ const Rol = require('../models/rol');
 
 module.exports = {
 
+    getUser(req, res) {
+        console.log(req.params.id);
+
+
+
+        User.findById(req.params.id, async (err, myUser) => {
+            console.log('usuario ', myUser);
+            jsonResult = JSON.parse(JSON.stringify(myUser[0]));
+            if (err) {
+                return res.status(501).json({
+                    success: false,
+                    message: 'Hubo un error en la obtención de datos',
+                    error: err
+                });
+            }
+            if (!myUser) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'No hay datos para mostrar'
+                });
+            }
+            return res.status(201).json(jsonResult);
+
+        })
+    },
+
     login(req, res) {
         const email = req.body.email;
         const password = req.body.password;
@@ -93,6 +119,8 @@ module.exports = {
         })
 
     },
+
+
     list(req, res) {
 
         User.getAll((err, userList) => {

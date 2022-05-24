@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:silva_admin/models/rol.dart';
+import 'package:silva_admin/models/user.dart';
 
 const mBColor = Color.fromRGBO(20, 20, 20, 1);
 const myBlue = Color.fromRGBO(89, 152, 197, 1);
@@ -15,19 +16,12 @@ const myGreenLight = Color.fromRGBO(194, 215, 193, 1);
 const myBlack = Color.fromRGBO(34, 34, 34, 1);
 
 class ColorsPicker {
-  Color color = myGreen;
-
-  Color rolesLevelColor(List<Rol> roles, int level) {
-    for (var e in roles) {
-      if (e.id == "1") {
-        color = myPurple;
-        break;
-      }
-      if (e.id == "2") {
-        color = myYellow;
-        break;
-      }
+  Color rolesLevelColor(User user) {
+    int level = user.level!;
+    if (level == 0) {
+      level = 10;
     }
-    return color;
+    int nRoles = user.roles!.length;
+    return Color.fromARGB(level * 8 * nRoles, level * 20, level * 20, 51);
   }
 }

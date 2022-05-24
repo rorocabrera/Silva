@@ -45,6 +45,14 @@ class User {
     return toList;
   }
 
+  static List<String> rolesList(User user) {
+    List<String> roles = [];
+    user.roles!.forEach((item) {
+      roles.add(item.name ?? '');
+    });
+    return roles;
+  }
+
   Map<String, dynamic> toJson() => {
         "id": id,
         "email": email,
