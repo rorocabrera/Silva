@@ -62,13 +62,15 @@ class _LoginPageState extends State<LoginPage> {
             ]),
         margin: EdgeInsets.only(top: Get.height * 0.1, left: 50, right: 50),
         height: Get.height * 0.45,
-        child: Column(
-          children: [
-            _textYourInfo(),
-            _textFieldEmail(),
-            _textFieldPassword(),
-            _buttonLogic(),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              _textYourInfo(),
+              _textFieldEmail(),
+              _textFieldPassword(),
+              _buttonLogic(),
+            ],
+          ),
         ));
   }
 

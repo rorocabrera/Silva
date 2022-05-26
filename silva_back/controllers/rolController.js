@@ -50,6 +50,44 @@ module.exports = {
         })
 
     },
+    changeLevel(req, res) {
+        const userId = req.body.id;
+        const levelId = req.body.level;
+        Rol.changeLevel(userId, levelId, (err, data) => {
+            if (err) {
+                return res.status(501).json({
+                    success: false,
+                    message: 'Hubo un error en la operación',
+                    error: err
+                });
+            }
+
+            return res.status(201).json({
+                success: true,
+                message: 'El nivel se actualizó correctamente',
+                data: data
+            });
+
+        })
+
+    },
+    rolesModelList(req, res) {
+        Rol.modelList((err, data) => {
+            console.log(data);
+            if (err) {
+                return res.status(501).json({
+                    success: false,
+                    message: 'Hubo un error en la operación',
+                    error: err
+                });
+            }
+
+            return res.status(201).json(
+                data);
+
+        })
+
+    },
 
 
 }

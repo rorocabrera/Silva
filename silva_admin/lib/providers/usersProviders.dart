@@ -58,6 +58,19 @@ class UsersProvider extends GetConnect {
     return responseApi;
   }
 
+  Future<ResponseApi> changeLevel(String id, String level) async {
+    http.Response response = await http.post(
+      Uri.parse('$url/changeLevel'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: json.encode({'id': id, 'level': level}),
+    );
+
+    ResponseApi responseApi = ResponseApi.fromJson(json.decode(response.body));
+    return responseApi;
+  }
+
   Future<User> updateUser(String id) async {
     http.Response response = await http.get(Uri.parse('$url/$id'));
     var jsonResponse = json.decode(response.body);

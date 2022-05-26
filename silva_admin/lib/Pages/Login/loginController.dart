@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:silva_admin/Pages/register/register.dart';
 import 'package:silva_admin/models/response_api.dart';
 import 'package:silva_admin/providers/usersProviders.dart';
 
@@ -11,7 +12,7 @@ class LoginController extends GetxController {
   UsersProvider usersProvider = UsersProvider();
 
   void gotoRegisterPage() async {
-    Get.toNamed("/register");
+    Get.to(RegisterPage());
   }
 
   void login() async {

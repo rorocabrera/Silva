@@ -12,7 +12,10 @@ const cors = require('cors');
 
 const port = process.env.PORT || 5050;
 
+//importar rutas
+
 const usersRoutes = require('./routes/userRoutes');
+const perfilesRoutes = require('./routes/perfilesRoutes');
 
 const passport = require('passport');
 
@@ -30,8 +33,9 @@ require('./config/passport')(passport);
 
 app.set('port', port);
 
-
+//llamada a las rutas
 usersRoutes(app);
+perfilesRoutes(app);
 
 
 server.listen(port, '192.168.0.111' || 'localhost', () =>

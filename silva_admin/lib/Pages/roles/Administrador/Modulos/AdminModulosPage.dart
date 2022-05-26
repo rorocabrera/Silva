@@ -26,7 +26,7 @@ class AdminModulosPage extends StatelessWidget {
               children: [
                 _cardAdmin(1),
                 _cardAdmin(2),
-                _cardAdmin(3),
+                cnt.user.level == 0 ? _cardAdmin(3) : Container(),
               ],
             )));
   }

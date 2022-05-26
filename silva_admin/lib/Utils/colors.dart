@@ -22,6 +22,23 @@ class ColorsPicker {
       level = 10;
     }
     int nRoles = user.roles!.length;
-    return Color.fromARGB(level * 8 * nRoles, level * 20, level * 20, 51);
+    return Color.fromARGB(
+        level * 8 * nRoles, level * 20, level * 20, level * 25);
+  }
+
+  Color rolesColor(User user) {
+    double op = 0.7;
+    if (user.roles!.length == 1) {
+      return myGreenLight;
+    } else if (user.roles!.length == 2) {
+      for (var e in user.roles!) {
+        if (e.name == "SUPERVISOR") {
+          return Colors.amberAccent.withOpacity(op);
+        }
+      }
+    } else if (user.roles!.length == 3) {
+      op = 1;
+    }
+    return Colors.blueGrey.withOpacity(op);
   }
 }

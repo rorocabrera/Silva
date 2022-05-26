@@ -7,7 +7,7 @@ import 'package:silva_admin/Pages/roles/Administrador/Modulos/Registros/Equipos/
 import 'package:silva_admin/Pages/roles/Administrador/Modulos/Registros/Inventario/AdminRegInventarioPage.dart';
 import 'package:silva_admin/Pages/roles/Administrador/Modulos/Registros/Perfiles/AdminRegPerfilesPage.dart';
 import 'package:silva_admin/Pages/roles/Administrador/Modulos/Registros/registros_modulo.dart';
-import 'package:silva_admin/Pages/roles/Administrador/Modulos/Usuarios/AdinUsersPage.dart';
+import 'package:silva_admin/Pages/roles/Administrador/Modulos/Usuarios/AdminUsersPage.dart';
 import 'package:silva_admin/Pages/roles/Personal/Modulos/personal_modulos_page.dart';
 import 'package:silva_admin/Pages/roles/Supervisor/Obras/List/supervisor_obras_list_page.dart';
 import 'package:silva_admin/Pages/roles/roles_pages.dart';

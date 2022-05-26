@@ -19,7 +19,30 @@ CREATE TABLE IF NOT EXISTS user_has_roles(
     FOREIGN KEY(id_user) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY(id_rol) REFERENCES roles(id) ON UPDATE CASCADE ON DELETE CASCADE,
     PRIMARY KEY(id_user, id_rol)
+);
 
+CREATE TABLE IF NOT EXISTS user_has_profiles(
+    id_user BIGINT NOT NULL,
+    id_profile VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP(0) NOT NULL,
+    updated_at TIMESTAMP(0) NOT NULL,
+    FOREIGN KEY(id_user) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY(id_profile) REFERENCES perfiles(cedula) ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY(id_user, id_profile)
+);
+
+
+
+
+CREATE TABLE IF NOT EXISTS perfiles(
+    cedula VARCHAR(50) PRIMARY KEY,
+    email VARCHAR(50) UNIQUE,
+    nombre VARCHAR(50),
+    apellido VARCHAR(50),
+    telefono VARCHAR(50),
+    created_at TIMESTAMP(0) NOT NULL,
+    updated_at TIMESTAMP(0) NOT NULL,
+    FOREIGN KEY(email) REFERENCES users(email) ON UPDATE CASCADE ON DELETE CASCADE,
 );
 
 

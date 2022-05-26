@@ -58,5 +58,57 @@ Rol.delete = (id_user, id_rol, result) => {
         });
 }
 
+Rol.changeLevel = (id_user, id_level, result) => {
+    const sql = `
+            UPDATE
+                users 
+                SET level = ?
+                WHERE id = ?
+
+            `;
+
+    db.query(
+        sql,
+        [id_level, id_user],
+        (err, res) => {
+            if (err) {
+                console.log('Error: ', err)
+                result(err, null);
+            }
+            else {
+                console.log('Se modificó el nivel del usuario', res.insertId);
+                result(null, res.insertId);
+
+            }
+
+        });
+}
+Rol.modelList = (result) => {
+    const sql =
+        `
+            SELECT
+            id,
+            name
+            FROM roles
+            `;
+    db.query(sql, (err, res) => {
+        if (err) {
+            console.log('Error: ', err)
+            result(err, null);
+        }
+        else {
+            console.log("se realizo peticion de lista de roles");
+            result(null, res);
+
+        }
+
+    }
+    );
+
+
+
+}
+
+
 module.exports = Rol;
 
