@@ -11,6 +11,7 @@ import 'package:silva_admin/Pages/roles/Administrador/Modulos/Usuarios/AdminUser
 import 'package:silva_admin/Pages/roles/Personal/Modulos/personal_modulos_page.dart';
 import 'package:silva_admin/Pages/roles/Supervisor/Obras/List/supervisor_obras_list_page.dart';
 import 'package:silva_admin/Pages/roles/roles_pages.dart';
+import 'package:silva_admin/locator.dart';
 import 'package:silva_admin/models/user.dart';
 import 'Pages/Login/login.dart';
 import 'Pages/register/register.dart';
@@ -20,6 +21,7 @@ User userSession = User.fromJson(GetStorage().read('user') ?? {});
 
 void main() async {
   await GetStorage.init();
+  setupServices();
   runApp(MyApp());
 }
 

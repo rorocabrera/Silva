@@ -12,13 +12,8 @@ User.findById = (id, result) => {
             U.name,
             U.level,
             U.password,
-            JSON_ARRAYAGG(
-            JSON_OBJECT(
-                'id', CONVERT(R.id, char),
-                'name', R.name,
-                'route', R.route
-                
-            ) ) AS roles
+            CONCAT('[', GROUP_CONCAT(json_object(
+                'id', CONVERT(R.id, char), 'name', R.name, 'route', R.route )), ']') AS roles
         FROM
             users AS U
         INNER JOIN
@@ -57,6 +52,7 @@ User.findById = (id, result) => {
 
 User.findByEmail = (email, result) => {
 
+
     const sql = `
     SELECT
         U.id,
@@ -64,13 +60,8 @@ User.findByEmail = (email, result) => {
         U.name,
         U.level,
         U.password,
-        JSON_ARRAYAGG(
-        JSON_OBJECT(
-            'id', CONVERT(R.id, char),
-            'name', R.name,
-            'route', R.route
-            
-        ) ) AS roles
+        CONCAT('[', GROUP_CONCAT(json_object(
+            'id', CONVERT(R.id, char), 'name', R.name, 'route', R.route )), ']') AS roles
     FROM
         users AS U
     INNER JOIN
@@ -138,7 +129,7 @@ User.create = async (user, result) => {
         (err, res) => {
             if (err) {
                 console.log('Error: ', err)
-                result(err, null); elpropio
+                result(err, null); 
             }
             else {
                 console.log('Id del nuevo usuario: ', res.insertId);
@@ -159,12 +150,8 @@ User.getAll = (result) => {
         U.name,
         U.level,
         
-        JSON_ARRAYAGG(
-        JSON_OBJECT(
-            'id', CONVERT(R.id, char),
-            'name', R.name
-            
-        ) )  AS roles
+        CONCAT('[', GROUP_CONCAT(json_object(
+            'id', CONVERT(R.id, char), 'name', R.name, 'route', R.route )), ']') AS roles
     FROM
         users AS U
     INNER JOIN

@@ -1,5 +1,8 @@
 CREATE DATABASE [IF NOT EXISTS] nomina
 
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'yosoy991';
+xampp\phpMyAdmin\config.inc.php
+
 CREATE TABLE IF NOT EXISTS users(
 
 	id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -7,25 +10,44 @@ CREATE TABLE IF NOT EXISTS users(
     name VARCHAR(50) NOT NULL UNIQUE,
     level INT NOT NULL,
     password VARCHAR(100) NOT NULL,
-    created_at TIMESTAMP(0) NOT NULL,
-    updated_at TTMESTAMP(0) NOT NULL
+    created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP
 
 );
+CREATE TABLE IF NOT EXISTS roles(
+    	id BIGINT PRIMARY KEY AUTO_INCREMENT,
+        name VARCHAR(90) NOT NULL UNIQUE,
+        route VARCHAR(100) NOT NULL,
+        created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE IF NOT EXISTS user_has_roles(
     id_user BIGINT NOT NULL,
     id_rol BIGINT NOT NULL,
-    created_at TIMESTAMP(0) NOT NULL,
-    updated_at TIMESTAMP(0) NOT NULL,
+    created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(id_user) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY(id_rol) REFERENCES roles(id) ON UPDATE CASCADE ON DELETE CASCADE,
     PRIMARY KEY(id_user, id_rol)
 );
+CREATE TABLE IF NOT EXISTS perfiles(
+    cedula VARCHAR(50) PRIMARY KEY,
+    email VARCHAR(50) UNIQUE,
+    nombre VARCHAR(50),
+    apellido VARCHAR(50),
+    telefono VARCHAR(50),
+    created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(email) REFERENCES users(email) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
 
 CREATE TABLE IF NOT EXISTS user_has_profiles(
     id_user BIGINT NOT NULL,
     id_profile VARCHAR(50) NOT NULL,
-    created_at TIMESTAMP(0) NOT NULL,
-    updated_at TIMESTAMP(0) NOT NULL,
+    created_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(id_user) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE,
     FOREIGN KEY(id_profile) REFERENCES perfiles(cedula) ON UPDATE CASCADE ON DELETE CASCADE,
     PRIMARY KEY(id_user, id_profile)
@@ -33,30 +55,7 @@ CREATE TABLE IF NOT EXISTS user_has_profiles(
 
 
 
-
-CREATE TABLE IF NOT EXISTS perfiles(
-    cedula VARCHAR(50) PRIMARY KEY,
-    email VARCHAR(50) UNIQUE,
-    nombre VARCHAR(50),
-    apellido VARCHAR(50),
-    telefono VARCHAR(50),
-    created_at TIMESTAMP(0) NOT NULL,
-    updated_at TIMESTAMP(0) NOT NULL,
-    FOREIGN KEY(email) REFERENCES users(email) ON UPDATE CASCADE ON DELETE CASCADE,
-);
-
-
-
-CREATE TABLE IF NOT EXISTS roles(
-    	id BIGINT PRIMARY KEY AUTO_INCREMENT,
-        name VARCHAR(90) NOT NULL UNIQUE,
-        route VARCHAR(100) NOT NULL,
-        created_at TIMESTAMP(0) NOT NULL,
-        updated_at TIMESTAMP(0) NOT NULL
-);
-
-
-INSERT INTO IF NOT EXISTS roles(
+INSERT INTO  roles(
     name,
     route,
     created_at,
