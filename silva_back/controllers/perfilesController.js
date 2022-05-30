@@ -59,6 +59,32 @@ module.exports = {
         })
 
     },
+    update(req, res) {
+        console.log(' se recibe peticion modificacion perfil');
+        console.log(req.body);
+        const perfil = req.body;
+        if (perfil.email === '') {
+            perfil.email = null;
+        }
+        Perfil.update(perfil, (err, data) => {
+            if (err) {
+                return res.status(501).json({
+                    success: false,
+                    message: 'Hubo un error con el registro',
+                    error: err
+                });
+            }
+
+
+            return res.status(201).json({
+                success: true,
+                message: 'la modificacion se realizó correctamente',
+                data: data
+            });
+
+        })
+
+    },
     list(req, res) {
 
         Perfil.getAll((err, perfilList) => {

@@ -27,6 +27,43 @@ DELETE FROM
         });
 }
 
+Perfil.update = (perfil, result) => {
+    const sql = `
+UPDATE
+    perfiles
+SET
+    email = ?,
+    nombre = ?,
+    apellido = ?,
+    telefono = ?,
+    updated_at = ?
+WHERE 
+    cedula = ?
+
+`;
+    db.query(
+        sql,
+        [
+            perfil.email,
+            perfil.nombre,
+            perfil.apellido,
+            perfil.telefono,
+            new Date(),
+            perfil.cedula],
+        (err, res) => {
+            if (err) {
+                console.log('Error: ', err)
+                result(err, null);
+            }
+            else {
+                console.log('Perfil modificado', res.insertId);
+                result(null, res.insertId);
+
+            }
+
+        });
+}
+
 Perfil.create = async (perfil, result) => {
 
 

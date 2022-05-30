@@ -18,7 +18,7 @@ class RegistrosModuloPageController extends GetxController {
         route = "/admin/Reg/Perf";
         break;
     }
-    Get.offNamed(route);
+    Get.toNamed(route);
   }
 
   void signOut() {

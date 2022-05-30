@@ -18,7 +18,7 @@ class AdminModulosPageController extends GetxController {
         route = "/admin/opt/users";
         break;
     }
-    Get.offNamed(route);
+    Get.toNamed(route);
   }
 
   void signOut() {

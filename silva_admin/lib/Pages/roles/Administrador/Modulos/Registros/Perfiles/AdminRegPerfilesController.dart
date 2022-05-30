@@ -15,6 +15,8 @@ class AdminRegPerfilesController extends GetxController {
 
   PerfilesProvider perfilesProvider = PerfilesProvider();
   List<Perfil> perfiles = <Perfil>[].obs;
+  var b = false
+      .obs; //un bolleano para reconocer cambios en el ProfilePage y permitir la modificación
 
   void getPerfiles() async {
     var result = await listPetition();
@@ -28,6 +30,25 @@ class AdminRegPerfilesController extends GetxController {
   TextEditingController apellidoController = TextEditingController();
   TextEditingController telefonoController = TextEditingController();
   String cedT = "V-";
+
+  void formClear() {
+    cedulaController.clear();
+    emailController.clear();
+    nombreController.clear();
+    apellidoController.clear();
+    telefonoController.clear();
+    b.value = false;
+  }
+
+  void formFill(int index) {
+    String ced = perfiles[index].cedula!;
+    cedT = ced.substring(0, 2);
+    cedulaController.text = ced.substring(2);
+    emailController.text = perfiles[index].email ?? '';
+    nombreController.text = perfiles[index].nombre ?? '';
+    apellidoController.text = perfiles[index].apellido ?? '';
+    telefonoController.text = perfiles[index].telefono ?? '';
+  }
 
   void register() async {
     String? email = emailController.text.trim();
@@ -58,13 +79,32 @@ class AdminRegPerfilesController extends GetxController {
   }
 
   void delete(int index) async {
-    http.Response response = await perfilesProvider.delete(perfiles[index]);
-    if (response.statusCode == 201) {
-      Get.snackbar("Exito", 'Usuario Eliminado Satisfactoriamente');
-      getPerfiles();
-    }
+    bool t =
+        await confirmDialog("Eliminar: ", "  ", perfiles[index].cedula ?? "");
+    if (t) {
+      http.Response response = await perfilesProvider.delete(perfiles[index]);
+      if (response.statusCode == 201) {
+        Get.snackbar("Exito", 'Usuario Eliminado Satisfactoriamente');
+        getPerfiles();
+      }
 
-    print('RESPONSE: ${response.body}');
+      print('RESPONSE: ${response.body}');
+    }
+  }
+
+  void updateProfile(int index) async {
+    bool t =
+        await confirmDialog("Modificar: ", "  ", perfiles[index].cedula ?? "");
+    if (t) {
+      http.Response response =
+          await perfilesProvider.updatePerfil(perfiles[index]);
+      if (response.statusCode == 201) {
+        Get.snackbar("Exito", 'Usuario Modificado Satisfactoriamente');
+        getPerfiles();
+      }
+
+      print('RESPONSE: ${response.body}');
+    }
   }
 
   bool isValidForm(String email, String cedula, String nombre, String apellido,
@@ -81,12 +121,12 @@ class AdminRegPerfilesController extends GetxController {
       return false;
     }
 
-    if (cedula.isEmpty) {
+    if (cedulaController.text.isEmpty) {
       Get.snackbar('Formulario no valido', 'Debes ingresar una Cédula');
       return false;
     }
 
-    if (!isNumeric(cedula)) {
+    if (!isNumeric(cedulaController.text)) {
       Get.snackbar('Formulario no valido', 'Formato de Cedula incorrecto');
       return false;
     }
@@ -115,5 +155,36 @@ class AdminRegPerfilesController extends GetxController {
 
   bool isNumeric(String s) {
     return int.tryParse(s) != null;
+  }
+
+  Future<bool> confirmDialog(String action, String name, String id) async {
+    bool result = false;
+
+    await Get.defaultDialog(
+      title: "Confirmar",
+      content: _dialogContent(action, name, id),
+      barrierDismissible: false,
+      onCancel: () {
+        result = false;
+      },
+      onConfirm: () {
+        result = true;
+        Get.back();
+      },
+    );
+
+    return result;
+  }
+
+  Widget _dialogContent(String action, String name, String id) {
+    return Container(
+        child: Row(
+      children: [
+        Text(action),
+        Text(name),
+        Text("de usuario id: " + id),
+      ],
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    ));
   }
 }

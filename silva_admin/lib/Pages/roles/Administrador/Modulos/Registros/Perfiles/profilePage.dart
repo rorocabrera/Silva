@@ -4,7 +4,10 @@ import 'package:silva_admin/Pages/roles/Administrador/Modulos/Registros/Perfiles
 import 'package:silva_admin/Pages/roles/Administrador/Modulos/Registros/Perfiles/AdminRegPerfilesPage.dart';
 
 AdminRegPerfilesController cnt = Get.find();
-Widget profileForm() {
+
+Widget profilePage(int index) {
+  cnt.formFill(index);
+
   return Scaffold(
     body: Container(
         decoration: BoxDecoration(
@@ -27,14 +30,14 @@ Widget profileForm() {
               _textFieldName(),
               _textFieldApellido(),
               _textFieldTelefono(),
-              _buttonLogic(),
+              _buttonLogic(index),
             ],
           ),
         )),
   );
 }
 
-Widget _buttonLogic() {
+Widget _buttonLogic(int index) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceAround,
     children: [
@@ -55,14 +58,16 @@ Widget _buttonLogic() {
           margin: EdgeInsets.all(20),
           width: 150,
           height: 40,
-          child: ElevatedButton(
+          child: Obx(() => ElevatedButton(
               onPressed: () {
-                cnt.register();
-                cnt.getPerfiles();
+                if (cnt.b.value) {
+                  cnt.updateProfile(index);
+                  cnt.getPerfiles();
+                }
                 cnt.formClear();
                 Get.to(AdminRegPerfPage());
               },
-              child: Text("Aceptar"))),
+              child: cnt.b.value ? Text("Modificar") : Text("Aceptar")))),
     ],
   );
 }
@@ -74,13 +79,10 @@ Widget _textFieldCedula() {
       children: [
         Flexible(
           child: DropdownButtonFormField<String>(
+              value: cnt.cedT,
               elevation: 0,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-              ),
-              hint: Text(
-                "V-",
-                style: TextStyle(fontSize: 12),
               ),
               onChanged: ((value) {
                 cnt.cedT = value ?? "V-";
@@ -99,6 +101,9 @@ Widget _textFieldCedula() {
         Expanded(
           flex: 3,
           child: TextField(
+            onChanged: (value) {
+              cnt.b.value = true;
+            },
             controller: cnt.cedulaController,
             textInputAction: TextInputAction.done,
             keyboardType: TextInputType.number,
@@ -117,6 +122,9 @@ Widget _textFieldEmail() {
   return Container(
     margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
     child: TextField(
+      onChanged: (value) {
+        cnt.b.value = true;
+      },
       controller: cnt.emailController,
       textInputAction: TextInputAction.done,
       keyboardType: TextInputType.emailAddress,
@@ -132,6 +140,9 @@ Widget _textFieldName() {
   return Container(
     margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
     child: TextField(
+      onChanged: (value) {
+        cnt.b.value = true;
+      },
       controller: cnt.nombreController,
       textInputAction: TextInputAction.done,
       keyboardType: TextInputType.emailAddress,
@@ -147,6 +158,9 @@ Widget _textFieldApellido() {
   return Container(
     margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
     child: TextField(
+        onChanged: (value) {
+          cnt.b.value = true;
+        },
         controller: cnt.apellidoController,
         textInputAction: TextInputAction.done,
         keyboardType: TextInputType.emailAddress,
@@ -163,6 +177,9 @@ Widget _textFieldTelefono() {
   return Container(
     margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
     child: TextField(
+        onChanged: (value) {
+          cnt.b.value = true;
+        },
         controller: cnt.telefonoController,
         textInputAction: TextInputAction.done,
         keyboardType: TextInputType.phone,
@@ -180,7 +197,7 @@ Widget _textYourInfo() {
   return Padding(
     padding: const EdgeInsets.only(top: 20, bottom: 10),
     child: Text(
-      "Ingrese los datos del nuevo perfil",
+      "Datos del perfil",
       style: TextStyle(color: myBlack),
     ),
   );
