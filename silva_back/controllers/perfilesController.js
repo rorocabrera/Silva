@@ -32,6 +32,30 @@ module.exports = {
         })
 
     },
+    list(req, res) {
+
+        Perfil.getAll((err, perfilList) => {
+            jsonResult = JSON.parse(JSON.stringify(perfilList));
+          
+            if (err) {
+                return res.status(501).json({
+                    success: false,
+                    message: 'Hubo un error en la obtención de datos',
+                    error: err
+                });
+            }
+            if (!perfilList) {
+                return res.status(401).json({
+                    success: false,
+                    message: 'No hay datos para mostrar'
+                });
+            }
+            return res.status(201).json(jsonResult);
+
+
+        })
+
+    },
 
 
 

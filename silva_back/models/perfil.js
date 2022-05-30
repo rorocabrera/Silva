@@ -50,6 +50,34 @@ Perfil.create = async (perfil, result) => {
 
     )
 }
+Perfil.getAll = (result) => {
+    const sql = `
+    SELECT
+        cedula,
+        email,
+        nombre,
+        apellido,
+        telefono
+    FROM
+        perfiles
+    GROUP BY
+        cedula;
+    `;
+    db.query(sql, (err, data) => {
+        if (err) {
+            console.log('Error: ', err)
+            result(err, null);
+        }
+        else {
+
+            result(null, data);
+
+        }
+
+    })
+
+
+}
 
 
 

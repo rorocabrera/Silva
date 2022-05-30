@@ -9,7 +9,18 @@ import 'package:silva_admin/providers/perfilesProviders.dart';
 import 'package:http/http.dart' as http;
 
 class AdminRegPerfilesController extends GetxController {
+  AdminRegPerfilesController() {
+    getPerfiles();
+  }
+
   PerfilesProvider perfilesProvider = PerfilesProvider();
+  List<Perfil> perfiles = <Perfil>[].obs;
+
+  void getPerfiles() async {
+    var result = await listPetition();
+    perfiles.clear();
+    perfiles.addAll(result);
+  }
 
   TextEditingController cedulaController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -77,5 +88,9 @@ class AdminRegPerfilesController extends GetxController {
     }
 
     return true;
+  }
+
+  Future<List<Perfil>> listPetition() async {
+    return perfilesProvider.listAllPerfiles();
   }
 }

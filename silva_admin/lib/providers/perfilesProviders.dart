@@ -17,4 +17,18 @@ class PerfilesProvider extends GetxController {
       body: json.encode(perfil.toJson()),
     );
   }
+
+  Future<List<Perfil>> listAllPerfiles() async {
+    http.Response response = await http.get(Uri.parse('$url/list'));
+    var jsonResponse = jsonDecode(response.body);
+
+    if (response.statusCode == 401 || response.statusCode == 501) {
+      Get.snackbar("Petición denegada", "Error en la petición");
+      return [];
+    }
+
+    List<Perfil> perfiles = Perfil.fromJsonList(jsonResponse);
+
+    return perfiles;
+  }
 }

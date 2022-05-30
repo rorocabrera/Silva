@@ -34,4 +34,13 @@ class Perfil {
         "apellido": apellido,
         "telefono": telefono,
       };
+
+  static List<Perfil> fromJsonList(List<dynamic> jsonList) {
+    List<Perfil> toList = [];
+    jsonList.forEach((item) {
+      Perfil perfil = Perfil.fromJson(item);
+      toList.add(perfil);
+    });
+    return toList;
+  }
 }
