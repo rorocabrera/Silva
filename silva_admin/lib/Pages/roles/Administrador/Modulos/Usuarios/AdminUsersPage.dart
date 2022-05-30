@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:silva_admin/Pages/roles/Administrador/Modulos/Usuarios/AdminUsersController.dart';
 import 'package:silva_admin/Utils/colors.dart';
+import 'package:silva_admin/Widgets/MyAppbar/app_bar.dart';
 
 import '../../../../../models/user.dart';
 
@@ -12,16 +13,7 @@ class AdminUsersPage extends StatelessWidget {
   Widget build(BuildContext context) {
     List<User> users = cnt.users;
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Modulo Administración de Usuarios'),
-        actions: [
-          IconButton(
-              onPressed: () {
-                cnt.signOut();
-              },
-              icon: Icon(Icons.door_sliding)),
-        ],
-      ),
+      appBar: MyAppBar("Módulo de administración de usuarios"),
       body: Obx(() => Center(
             child: _buildUsers(users),
           )),

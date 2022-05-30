@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:silva_admin/Pages/roles/Administrador/Modulos/AdminModulosPageController.dart';
+import 'package:silva_admin/Widgets/MyAppbar/app_bar.dart';
 
 import '../../../../models/rol.dart';
 
@@ -10,16 +11,7 @@ class AdminModulosPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          actions: [
-            IconButton(
-                onPressed: () {
-                  cnt.signOut();
-                },
-                icon: Icon(Icons.door_sliding)),
-          ],
-          title: Text('Opciones del Administrador'),
-        ),
+        appBar: MyAppBar("Modulos Disponibles"),
         body: Container(
             margin: EdgeInsets.symmetric(vertical: Get.height * 0.17),
             child: ListView(

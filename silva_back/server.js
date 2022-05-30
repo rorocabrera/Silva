@@ -38,7 +38,7 @@ usersRoutes(app);
 perfilesRoutes(app);
 
 
-server.listen(port, '192.168.0.106' || 'localhost', () =>
+server.listen(port, '192.168.0.103' || 'localhost', () =>
     console.log('Aplicación escuchando en puerto ' + port));
 
 

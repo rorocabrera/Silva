@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:silva_admin/Widgets/MyAppbar/my_app_bar_controller.dart';
 
-Widget MyAppBar(String name) {
+PreferredSizeWidget? MyAppBar(String name) {
   MyAppBarController appBarCnt = Get.put(MyAppBarController());
 
   return AppBar(
