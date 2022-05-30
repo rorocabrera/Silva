@@ -17,7 +17,11 @@ class AdminRegPerfPage extends StatelessWidget {
 
     return Scaffold(
         appBar: MyAppBar("Perfiles"),
-        body: Obx(() => _buildProfiles(perfiles)),
+        body: cnt.isFilled.value
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Obx(() => _buildProfiles(perfiles)),
         floatingActionButton: FloatingActionButton(
             onPressed: (() {
               cnt.formClear();

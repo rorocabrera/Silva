@@ -13,15 +13,18 @@ class AdminRegPerfilesController extends GetxController {
     getPerfiles();
   }
 
+  var isFilled = false.obs;
   PerfilesProvider perfilesProvider = PerfilesProvider();
   List<Perfil> perfiles = <Perfil>[].obs;
   var b = false
       .obs; //un bolleano para reconocer cambios en el ProfilePage y permitir la modificación
 
-  void getPerfiles() async {
+  Future<bool> getPerfiles() async {
     var result = await listPetition();
+    isFilled.value = true;
     perfiles.clear();
     perfiles.addAll(result);
+    return true;
   }
 
   TextEditingController cedulaController = TextEditingController();
@@ -38,6 +41,7 @@ class AdminRegPerfilesController extends GetxController {
     apellidoController.clear();
     telefonoController.clear();
     b.value = false;
+    isFilled.value = false;
   }
 
   void formFill(int index) {
@@ -78,7 +82,7 @@ class AdminRegPerfilesController extends GetxController {
     }
   }
 
-  void delete(int index) async {
+  Future<bool> delete(int index) async {
     bool t =
         await confirmDialog("Eliminar: ", "  ", perfiles[index].cedula ?? "");
     if (t) {
@@ -90,21 +94,40 @@ class AdminRegPerfilesController extends GetxController {
 
       print('RESPONSE: ${response.body}');
     }
+    return t;
   }
 
-  void updateProfile(int index) async {
-    bool t =
-        await confirmDialog("Modificar: ", "  ", perfiles[index].cedula ?? "");
-    if (t) {
-      http.Response response =
-          await perfilesProvider.updatePerfil(perfiles[index]);
-      if (response.statusCode == 201) {
-        Get.snackbar("Exito", 'Usuario Modificado Satisfactoriamente');
-        getPerfiles();
+  Future<bool> updateProfile(int index) async {
+    String? email = emailController.text.trim();
+    String cedula = perfiles[index].cedula ?? '';
+    String nombre = nombreController.text.trim();
+    String apellido = apellidoController.text.trim();
+    String telefono = telefonoController.text.trim();
+
+    if (isValidForm(email, cedula, nombre, apellido, telefono)) {
+      Perfil perfil = Perfil(
+        email: email,
+        cedula: cedula,
+        nombre: nombre,
+        apellido: apellido,
+        telefono: telefono,
+      );
+
+      bool t = await confirmDialog("Modificar: ", "  ", perfil.cedula ?? "");
+      if (t) {
+        http.Response response = await perfilesProvider.updatePerfil(perfil);
+        if (response.statusCode == 201) {
+          Get.snackbar("Exito", 'Usuario Modificado Satisfactoriamente');
+          getPerfiles();
+          formClear();
+        }
+
+        print('RESPONSE: ${response.body}');
       }
 
-      print('RESPONSE: ${response.body}');
+      return t;
     }
+    return false;
   }
 
   bool isValidForm(String email, String cedula, String nombre, String apellido,

@@ -38,36 +38,70 @@ Widget profilePage(int index) {
 }
 
 Widget _buttonLogic(int index) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceAround,
+  return Column(
     children: [
-      Container(
-          decoration: BoxDecoration(
-              color: Colors.red, borderRadius: BorderRadius.circular(10)),
-          margin: EdgeInsets.all(20),
-          width: 150,
-          height: 40,
-          child: ElevatedButton(
-              onPressed: () {
-                Get.off(AdminRegPerfPage());
-              },
-              child: Text("Cancelar"))),
-      Container(
-          decoration: BoxDecoration(
-              color: Colors.green, borderRadius: BorderRadius.circular(10)),
-          margin: EdgeInsets.all(20),
-          width: 150,
-          height: 40,
-          child: Obx(() => ElevatedButton(
-              onPressed: () {
-                if (cnt.b.value) {
-                  cnt.updateProfile(index);
-                  cnt.getPerfiles();
-                }
-                cnt.formClear();
-                Get.to(AdminRegPerfPage());
-              },
-              child: cnt.b.value ? Text("Modificar") : Text("Aceptar")))),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Container(
+              decoration: BoxDecoration(
+                  color: Colors.red, borderRadius: BorderRadius.circular(10)),
+              margin: EdgeInsets.all(8),
+              width: 120,
+              height: 40,
+              child: ElevatedButton(
+                  onPressed: () async {
+                    var b = await cnt.delete(index);
+                    if (b) {
+                      Get.off(AdminRegPerfPage());
+                    }
+                  },
+                  child: Text("Eliminar"))),
+          Container(
+              decoration: BoxDecoration(
+                  color: Colors.red, borderRadius: BorderRadius.circular(10)),
+              margin: EdgeInsets.all(8),
+              width: 120,
+              height: 40,
+              child:
+                  ElevatedButton(onPressed: () {}, child: Text("Biometrics"))),
+        ],
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Container(
+              decoration: BoxDecoration(
+                  color: Colors.red, borderRadius: BorderRadius.circular(10)),
+              margin: EdgeInsets.only(top: 8),
+              width: 120,
+              height: 40,
+              child: ElevatedButton(
+                  onPressed: () {
+                    Get.off(AdminRegPerfPage());
+                  },
+                  child: Text("Cancelar"))),
+          Container(
+              decoration: BoxDecoration(
+                  color: Colors.green, borderRadius: BorderRadius.circular(10)),
+              margin: EdgeInsets.all(8),
+              width: 120,
+              height: 40,
+              child: Obx(() => ElevatedButton(
+                  onPressed: () async {
+                    if (cnt.b.value) {
+                      var v = await cnt.updateProfile(index);
+                      if (v) {
+                        cnt.getPerfiles();
+                        Get.to(AdminRegPerfPage());
+                      }
+                    } else {
+                      Get.to(AdminRegPerfPage());
+                    }
+                  },
+                  child: cnt.b.value ? Text("Modificar") : Text("Aceptar")))),
+        ],
+      ),
     ],
   );
 }
