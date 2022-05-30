@@ -27,10 +27,11 @@ class AdminRegPerfilesController extends GetxController {
   TextEditingController nombreController = TextEditingController();
   TextEditingController apellidoController = TextEditingController();
   TextEditingController telefonoController = TextEditingController();
+  String cedT = "V-";
 
   void register() async {
-    String email = emailController.text.trim();
-    String cedula = cedulaController.text;
+    String? email = emailController.text.trim();
+    String cedula = cedT + cedulaController.text;
     String nombre = nombreController.text.trim();
     String apellido = apellidoController.text.trim();
     String telefono = telefonoController.text.trim();
@@ -49,26 +50,44 @@ class AdminRegPerfilesController extends GetxController {
 
       if (response.statusCode == 201) {
         Get.snackbar("Exito", 'Usuario Registrado Satisfactoriamente');
+        getPerfiles();
       }
 
       print('RESPONSE: ${response.body}');
     }
   }
 
-  bool isValidForm(String email, String cedula, String nombre, String apellido,
-      String telefono) {
-    if (email.isEmpty) {
-      Get.snackbar('Formulario no valido', 'Debes ingresar el email');
-      return false;
+  void delete(int index) async {
+    http.Response response = await perfilesProvider.delete(perfiles[index]);
+    if (response.statusCode == 201) {
+      Get.snackbar("Exito", 'Usuario Eliminado Satisfactoriamente');
+      getPerfiles();
     }
 
-    if (!GetUtils.isEmail(email)) {
-      Get.snackbar('Formulario no valido', 'El email no es valido');
-      return false;
+    print('RESPONSE: ${response.body}');
+  }
+
+  bool isValidForm(String email, String cedula, String nombre, String apellido,
+      String telefono) {
+    if (!email.isEmpty) {
+      if (!GetUtils.isEmail(email)) {
+        Get.snackbar('Formulario no valido', 'El email no es valido');
+        return false;
+      }
     }
 
     if (nombre.isEmpty) {
-      Get.snackbar('Formulario no valido', 'Debes ingresar tu nombre');
+      Get.snackbar('Formulario no valido', 'Debes ingresar un Nombre');
+      return false;
+    }
+
+    if (cedula.isEmpty) {
+      Get.snackbar('Formulario no valido', 'Debes ingresar una Cédula');
+      return false;
+    }
+
+    if (!isNumeric(cedula)) {
+      Get.snackbar('Formulario no valido', 'Formato de Cedula incorrecto');
       return false;
     }
 
@@ -92,5 +111,9 @@ class AdminRegPerfilesController extends GetxController {
 
   Future<List<Perfil>> listPetition() async {
     return perfilesProvider.listAllPerfiles();
+  }
+
+  bool isNumeric(String s) {
+    return int.tryParse(s) != null;
   }
 }

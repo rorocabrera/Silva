@@ -18,6 +18,16 @@ class PerfilesProvider extends GetxController {
     );
   }
 
+  Future<http.Response> delete(Perfil perfil) async {
+    return http.delete(
+      Uri.parse('$url/del'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: json.encode(perfil.toJson()),
+    );
+  }
+
   Future<List<Perfil>> listAllPerfiles() async {
     http.Response response = await http.get(Uri.parse('$url/list'));
     var jsonResponse = jsonDecode(response.body);

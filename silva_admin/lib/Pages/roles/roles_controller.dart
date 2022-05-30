@@ -34,6 +34,6 @@ class RolesController extends GetxController {
     }
 
     print(route);
-    Get.toNamed(route);
+    Get.offNamed(route);
   }
 }

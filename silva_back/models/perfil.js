@@ -3,6 +3,30 @@ const db = require('../config/config');
 
 const Perfil = {};
 
+Perfil.delete = (cedula, result) => {
+    const sql = `
+DELETE FROM 
+    perfiles
+    WHERE cedula = ?
+
+`;
+    db.query(
+        sql,
+        cedula,
+        (err, res) => {
+            if (err) {
+                console.log('Error: ', err)
+                result(err, null);
+            }
+            else {
+                console.log('Perfil eliminado', res.insertId);
+                result(null, res.insertId);
+
+            }
+
+        });
+}
+
 Perfil.create = async (perfil, result) => {
 
 
@@ -69,7 +93,7 @@ Perfil.getAll = (result) => {
             result(err, null);
         }
         else {
-
+            console.log(data);
             result(null, data);
 
         }

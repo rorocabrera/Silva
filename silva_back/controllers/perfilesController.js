@@ -3,16 +3,43 @@ const Perfil = require('../models/perfil');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const keys = require('../config/keys');
+const perfilesRoutes = require('../routes/perfilesRoutes');
 
 
 module.exports = {
+
+    delete(req, res) {
+        console.log(' se recibe peticion eliminar perfil');
+        console.log(req.body.cedula);
+        Perfil.delete(req.body.cedula, (err, data) => {
+
+            if (err) {
+                return res.status(501).json({
+                    success: false,
+                    message: 'Hubo un error con la peticion',
+                    error: err
+                });
+            }
+
+
+            return res.status(201).json({
+                success: true,
+                message: 'Perfil eliminado correctamente',
+                data: data
+            });
+        })
+
+    },
 
 
 
     add(req, res) {
         console.log(' se recibe peticion registro perfil');
         console.log(req.body);
-        const perfil = req.body; //VIENE DE FLUTTER
+        const perfil = req.body;
+        if (perfil.email === '') {
+            perfil.email = null;
+        }
         Perfil.create(perfil, (err, data) => {
             if (err) {
                 return res.status(501).json({
@@ -36,7 +63,7 @@ module.exports = {
 
         Perfil.getAll((err, perfilList) => {
             jsonResult = JSON.parse(JSON.stringify(perfilList));
-          
+
             if (err) {
                 return res.status(501).json({
                     success: false,
