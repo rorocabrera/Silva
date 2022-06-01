@@ -1,68 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
-import 'package:image/image.dart';
-import 'package:silva_admin/Pages/Biometrics/widgets/app_button.dart';
+import 'package:silva_admin/controllers/4_3_Admin_PerfCnt.dart';
 import 'package:silva_admin/db/databse_helper.dart';
 import 'package:silva_admin/models/biometric_user.dart';
 import 'package:silva_admin/services/camera.service.dart';
 import '../../../locator.dart';
 import '../../../services/ml_service.dart';
-import 'app_text_field.dart';
+import 'package:get/get.dart';
 
 class AuthActionButton extends StatefulWidget {
-  AuthActionButton(
-      {Key? key,
-      required this.onPressed,
-      required this.isLogin,
-      required this.reload});
+  AuthActionButton({
+    Key? key,
+    required this.onPressed,
+    required this.isLogin,
+    required this.reload,
+    required this.index,
+  });
   final Function onPressed;
   final bool isLogin;
   final Function reload;
+  final int index;
   @override
   _AuthActionButtonState createState() => _AuthActionButtonState();
 }
 
 class _AuthActionButtonState extends State<AuthActionButton> {
+  AdminRegPerfilesController cnt = Get.put(AdminRegPerfilesController());
+
   final MLService _mlService = locator<MLService>();
-  final CameraService _cameraService = locator<CameraService>();
-
-  final TextEditingController _userTextEditingController =
-      TextEditingController(text: '');
-  final TextEditingController _passwordTextEditingController =
-      TextEditingController(text: '');
-
   BioUser? predictedUser;
 
   Future _signUp(context) async {
     DatabaseHelper _databaseHelper = DatabaseHelper.instance;
     List predictedData = _mlService.predictedData;
-    String user = _userTextEditingController.text;
-    String password = _passwordTextEditingController.text;
+    String cedula = cnt.perfiles[widget.index].cedula ?? '';
+
     BioUser userToSave = BioUser(
-      user: user,
-      password: password,
+      cedula: cedula,
       modelData: predictedData,
     );
+
     await _databaseHelper.insert(userToSave);
     this._mlService.setPredictedData(null);
-    Get.snackbar("Succes", "Auth action button SignUp Success!");
   }
 
-  Future _signIn(context) async {
-    String password = _passwordTextEditingController.text;
-    if (this.predictedUser!.password == password) {
-      Get.snackbar("Succes", "Auth action button SignIn Success!");
-    } else {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            content: Text('Wrong password!'),
-          );
-        },
-      );
-    }
-  }
+  Future _signIn(context) async {}
 
   Future<BioUser?> _predictUser() async {
     BioUser? userAndPass = await _mlService.predict();
@@ -79,10 +60,7 @@ class _AuthActionButtonState extends State<AuthActionButton> {
             this.predictedUser = user;
           }
         }
-        PersistentBottomSheetController bottomSheetController =
-            Scaffold.of(context)
-                .showBottomSheet((context) => signSheet(context));
-        bottomSheetController.closed.whenComplete(() => widget.reload());
+        await _signUp(context);
       }
     } catch (e) {
       print(e);
@@ -122,78 +100,6 @@ class _AuthActionButtonState extends State<AuthActionButton> {
             Icon(Icons.camera_alt, color: Colors.white)
           ],
         ),
-      ),
-    );
-  }
-
-  signSheet(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(20),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          widget.isLogin && predictedUser != null
-              ? Container(
-                  child: Text(
-                    'Welcome back, ' + predictedUser!.user + '.',
-                    style: TextStyle(fontSize: 20),
-                  ),
-                )
-              : widget.isLogin
-                  ? Container(
-                      child: Text(
-                      'User not found 😞',
-                      style: TextStyle(fontSize: 20),
-                    ))
-                  : Container(),
-          Container(
-            child: Column(
-              children: [
-                !widget.isLogin
-                    ? AppTextField(
-                        controller: _userTextEditingController,
-                        labelText: "Your Name",
-                      )
-                    : Container(),
-                SizedBox(height: 10),
-                widget.isLogin && predictedUser == null
-                    ? Container()
-                    : AppTextField(
-                        controller: _passwordTextEditingController,
-                        labelText: "Password",
-                        isPassword: true,
-                      ),
-                SizedBox(height: 10),
-                Divider(),
-                SizedBox(height: 10),
-                widget.isLogin && predictedUser != null
-                    ? AppButton(
-                        text: 'LOGIN',
-                        onPressed: () async {
-                          _signIn(context);
-                        },
-                        icon: Icon(
-                          Icons.login,
-                          color: Colors.white,
-                        ),
-                      )
-                    : !widget.isLogin
-                        ? AppButton(
-                            text: 'SIGN UP',
-                            onPressed: () async {
-                              await _signUp(context);
-                            },
-                            icon: Icon(
-                              Icons.person_add,
-                              color: Colors.white,
-                            ),
-                          )
-                        : Container(),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }
