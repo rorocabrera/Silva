@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
-import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 import 'package:silva_admin/locator.dart';
 import 'package:silva_admin/services/camera.service.dart';
 
@@ -15,18 +16,28 @@ class FaceDetectorService {
   bool get faceDetected => _faces.isNotEmpty;
 
   void initialize() {
-    _faceDetector = GoogleMlKit.vision.faceDetector(
-      FaceDetectorOptions(
-        performanceMode: FaceDetectorMode.accurate,
-      ),
-    );
+    print("here******************************************");
+    final options =
+        FaceDetectorOptions(performanceMode: FaceDetectorMode.accurate);
+    _faceDetector = FaceDetector(options: options);
   }
 
   Future<void> detectFacesFromImage(CameraImage image) async {
+    print("we are trying to detect faces");
+
+    final WriteBuffer allBytes = WriteBuffer();
+
+    for (Plane plane in image.planes) {
+      allBytes.putUint8List(plane.bytes);
+    }
+    final bytes = allBytes.done().buffer.asUint8List();
+    // print(image);
+
     InputImageData _firebaseImageMetadata = InputImageData(
       imageRotation:
           _cameraService.cameraRotation ?? InputImageRotation.rotation0deg,
-      inputImageFormat: InputImageFormat.nv21,
+      inputImageFormat: InputImageFormatValue.fromRawValue(image.format.raw) ??
+          InputImageFormat.nv21,
       size: Size(image.width.toDouble(), image.height.toDouble()),
       planeData: image.planes.map(
         (Plane plane) {
@@ -40,7 +51,7 @@ class FaceDetectorService {
     );
 
     InputImage _firebaseVisionImage = InputImage.fromBytes(
-      bytes: image.planes[0].bytes,
+      bytes: bytes,
       inputImageData: _firebaseImageMetadata,
     );
 

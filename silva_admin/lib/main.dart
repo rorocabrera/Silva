@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:silva_admin/Pages/home/home_page.dart';
-import 'package:silva_admin/Pages/roles/Administrador/Modulos/AdminModulosPage.dart';
-import 'package:silva_admin/Pages/roles/Administrador/Modulos/Registros/Equipos/AdminRegEquiposPage.dart';
-import 'package:silva_admin/Pages/roles/Administrador/Modulos/Registros/Inventario/AdminRegInventarioPage.dart';
-import 'package:silva_admin/Pages/roles/Administrador/Modulos/Registros/Perfiles/AdminRegPerfilesPage.dart';
-import 'package:silva_admin/Pages/roles/Administrador/Modulos/Registros/registros_modulo.dart';
-import 'package:silva_admin/Pages/roles/Administrador/Modulos/Usuarios/AdminUsersPage.dart';
-import 'package:silva_admin/Pages/roles/Personal/Modulos/personal_modulos_page.dart';
-import 'package:silva_admin/Pages/roles/Supervisor/Obras/List/supervisor_obras_list_page.dart';
-import 'package:silva_admin/Pages/roles/roles_pages.dart';
+import 'package:silva_admin/Pages/2_1_AdminModulos.dart';
+import 'package:silva_admin/Pages/4_2_Admin_Equipos.dart';
+import 'package:silva_admin/Pages/4_1_Admin_Inventario.dart';
+import 'package:silva_admin/Pages/4_3_Admin_Perfiles.dart';
+import 'package:silva_admin/Pages/3_1_Admin_Obras.dart';
+import 'package:silva_admin/Pages/2_3_Pers.dart';
+import 'package:silva_admin/Pages/3_2_Admin_Reg_Modulos.dart';
+import 'package:silva_admin/Pages/3_3_Admin_Usuarios.dart';
+import 'package:silva_admin/Pages/1_Roles.dart';
+import 'package:silva_admin/Pages/2_2_Superv.dart';
 import 'package:silva_admin/locator.dart';
 import 'package:silva_admin/models/user.dart';
-import 'Pages/Login/login.dart';
-import 'Pages/register/register.dart';
-import 'Pages/roles/Administrador/Modulos/Obras/List/obras_list_page.dart';
+import 'Pages/login.dart';
+import 'Pages/register.dart';
 
 User userSession = User.fromJson(GetStorage().read('user') ?? {});
 
@@ -44,12 +43,11 @@ class _MyAppState extends State<MyApp> {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Nomina',
-      initialRoute: userSession.id != null ? "/home" : "/",
+      initialRoute: userSession.id != null ? "/pers/opt" : "/",
       theme: ThemeData(primarySwatch: Colors.blueGrey),
       getPages: [
         GetPage(name: "/", page: () => LoginPage()),
         GetPage(name: "/register", page: () => RegisterPage()),
-        GetPage(name: "/home", page: () => HomePage()),
         GetPage(name: "/roles", page: () => RolesPage()),
         GetPage(name: "/admin/opt", page: () => AdminModulosPage()),
         GetPage(name: "/superv/opt", page: () => SupervPage()),

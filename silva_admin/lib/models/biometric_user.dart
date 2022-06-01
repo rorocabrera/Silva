@@ -1,28 +1,24 @@
 import 'dart:convert';
 
 class BioUser {
-  String user;
-  String password;
+  String cedula;
   List modelData;
 
   BioUser({
-    required this.user,
-    required this.password,
+    required this.cedula,
     required this.modelData,
   });
 
   static BioUser fromMap(Map<String, dynamic> user) {
     return new BioUser(
-      user: user['user'],
-      password: user['password'],
+      cedula: user['cedula'],
       modelData: jsonDecode(user['model_data']),
     );
   }
 
   toMap() {
     return {
-      'user': user,
-      'password': password,
+      'cedula': cedula,
       'model_data': jsonEncode(modelData),
     };
   }

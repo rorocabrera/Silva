@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 import 'package:camera/camera.dart';
-import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
 import 'package:silva_admin/db/databse_helper.dart';
 import 'package:silva_admin/models/biometric_user.dart';
 import 'package:silva_admin/services/image_converter.dart';
@@ -47,6 +47,8 @@ class MLService {
   }
 
   void setCurrentPrediction(CameraImage cameraImage, Face? face) {
+    print("Set Current Prediction***********************************");
+
     if (_interpreter == null) throw Exception('Interpreter is null');
     if (face == null) throw Exception('Face is null');
     List input = _preProcess(cameraImage, face);
@@ -65,6 +67,7 @@ class MLService {
   }
 
   List _preProcess(CameraImage image, Face faceDetected) {
+    print("pre Processsssssssss***********************************");
     imglib.Image croppedImage = _cropFace(image, faceDetected);
     imglib.Image img = imglib.copyResizeCropSquare(croppedImage, 112);
 
@@ -91,6 +94,8 @@ class MLService {
   Float32List imageToByteListFloat32(imglib.Image image) {
     var convertedBytes = Float32List(1 * 112 * 112 * 3);
     var buffer = Float32List.view(convertedBytes.buffer);
+    print("**************************************bufferlenght");
+    print(buffer.length);
     int pixelIndex = 0;
 
     for (var i = 0; i < 112; i++) {
