@@ -239,19 +239,21 @@ class AdminUsersPage extends StatelessWidget {
         }
       }
     }
-    return DropdownButton<String>(
-      hint: Text(
-        "Cambiar nivel",
-        style: TextStyle(fontSize: 12),
+    return Flexible(
+      child: DropdownButton<String>(
+        hint: Text(
+          "Cambiar nivel",
+          style: TextStyle(fontSize: 12),
+        ),
+        onChanged: ((value) async {
+          bool r = await cnt.changeLevel(user.id, value);
+          if (r) {
+            cnt.updateUser(index, user.id ?? '');
+            cnt.expandedCard[index] = false;
+          }
+        }),
+        items: numeros.map(buildMenuItem).toList(),
       ),
-      onChanged: ((value) async {
-        bool r = await cnt.changeLevel(user.id, value);
-        if (r) {
-          cnt.updateUser(index, user.id ?? '');
-          cnt.expandedCard[index] = false;
-        }
-      }),
-      items: numeros.map(buildMenuItem).toList(),
     );
   }
 
