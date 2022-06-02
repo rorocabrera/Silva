@@ -107,6 +107,7 @@ class AdminUsersController extends GetxController {
 
   void signOut() {
     GetStorage().remove('user');
+    GetStorage().write('path', '/');
     Get.offNamedUntil('/', (route) => false);
   }
 }

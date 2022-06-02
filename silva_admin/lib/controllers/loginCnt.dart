@@ -12,6 +12,7 @@ class LoginController extends GetxController {
   UsersProvider usersProvider = UsersProvider();
 
   void gotoRegisterPage() async {
+    GetStorage().write('path', "/register");
     Get.to(RegisterPage());
   }
 
@@ -32,8 +33,10 @@ class LoginController extends GetxController {
         var roles = responseApi.toJson()["data"]["roles"];
         print(roles);
         if (roles.length == 1) {
+          GetStorage().write('path', "/pers/opt");
           Get.offNamedUntil("/pers/opt", (route) => false);
         } else {
+          GetStorage().write('path', "/roles");
           goToRolesPage();
         }
       } else {
@@ -43,10 +46,12 @@ class LoginController extends GetxController {
   }
 
   void goToHomePage() {
+    GetStorage().write('path', "/home");
     Get.offNamedUntil('/home', (route) => false);
   }
 
   void goToRolesPage() {
+    GetStorage().write('path', "/home");
     Get.offNamedUntil('/roles', (route) => false);
   }
 

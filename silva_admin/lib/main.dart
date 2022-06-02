@@ -19,7 +19,7 @@ import 'Pages/login.dart';
 import 'Pages/register.dart';
 
 User userSession = User.fromJson(GetStorage().read('user') ?? {});
-
+String initialRoute = GetStorage().read('path') ?? '/';
 void main() async {
   await GetStorage.init();
   setupServices();
@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Nomina',
-      initialRoute: userSession.id != null ? "/pers/opt" : "/",
+      initialRoute: userSession.id != null ? initialRoute : "/",
       theme: ThemeData(primarySwatch: Colors.blueGrey),
       getPages: [
         GetPage(name: "/", page: () => LoginPage()),

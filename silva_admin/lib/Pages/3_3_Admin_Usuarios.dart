@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:silva_admin/Pages/3_4_Admin_UsrEdit.dart';
 import 'package:silva_admin/controllers/3_3_Admin_UserCnt.dart';
 import 'package:silva_admin/Utils/colors.dart';
 import 'package:silva_admin/Widgets/MyAppbar/app_bar.dart';
@@ -161,41 +162,31 @@ class AdminUsersPage extends StatelessWidget {
         itemCount: users.length,
         itemBuilder: (context, index) {
           final user = users[index];
-          return Card(
-            color: colorPicked.rolesLevelColor(user),
-            shadowColor: Colors.white,
-            child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Obx(() => ExpansionTile(
-                    key: UniqueKey(),
-                    initiallyExpanded: cnt.expandedCard[index],
-                    onExpansionChanged: (isExpanded) {
-                      bool x = cnt.expandedCard[index];
-                      cnt.expandedCardinit();
-                      cnt.expandedCard[index] = !x;
-                    },
-                    leading: CircleAvatar(
-                      foregroundColor: Colors.white,
-                      child: _letterAvatar(user.name ?? ''),
-                      backgroundColor: colorPicked.rolesColor(user),
-                    ),
-                    title: Text(user.email ?? ''),
-                    subtitle: Text(user.name! + '     id:' + user.id!),
-                    trailing: _cardTrailing(user),
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          _addRol(user, index),
-                          _changeNivel(user, index),
-                          _eliminarRol(user, index)
-                        ],
-                      )
-                    ],
-                  )),
-            ),
-          );
+          return _userCard(colorPicked, user, index);
         });
+  }
+
+  Card _userCard(ColorsPicker colorPicked, User user, int index) {
+    return Card(
+      color: colorPicked.rolesLevelColor(user),
+      shadowColor: Colors.white,
+      child: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: ListTile(
+          onTap: () {
+            Get.to(UserPage(pIndex: index));
+          },
+          leading: CircleAvatar(
+            foregroundColor: Colors.white,
+            child: _letterAvatar(user.name ?? ''),
+            backgroundColor: colorPicked.rolesColor(user),
+          ),
+          title: Text(user.email ?? ''),
+          subtitle: Text(user.name! + '     id:' + user.id!),
+          trailing: _cardTrailing(user),
+        ),
+      ),
+    );
   }
 
   Widget _addRol(User user, int index) {
@@ -218,7 +209,6 @@ class AdminUsersPage extends StatelessWidget {
           bool r = await cnt.addRol(user.id, value);
           if (r) {
             cnt.updateUser(index, user.id ?? '');
-            cnt.expandedCard[index] = false;
           }
         }),
         items: items.map(buildMenuItem).toList(),
@@ -249,7 +239,6 @@ class AdminUsersPage extends StatelessWidget {
           bool r = await cnt.changeLevel(user.id, value);
           if (r) {
             cnt.updateUser(index, user.id ?? '');
-            cnt.expandedCard[index] = false;
           }
         }),
         items: numeros.map(buildMenuItem).toList(),
@@ -271,7 +260,6 @@ class AdminUsersPage extends StatelessWidget {
         bool r = await cnt.deleteRol(user.id, value);
         if (r) {
           cnt.updateUser(index, user.id ?? '');
-          cnt.expandedCard[index] = false;
         }
       }),
       items: roles.map(buildMenuItem).toList(),

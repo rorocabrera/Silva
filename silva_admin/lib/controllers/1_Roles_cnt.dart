@@ -9,6 +9,7 @@ class RolesController extends GetxController {
 
   void signOut() {
     GetStorage().remove('user');
+    GetStorage().write('path', '/');
     Get.offNamedUntil('/', (route) => false);
   }
 
@@ -34,6 +35,7 @@ class RolesController extends GetxController {
     }
 
     print(route);
+    GetStorage().write('path', route);
     Get.toNamed(route);
   }
 }

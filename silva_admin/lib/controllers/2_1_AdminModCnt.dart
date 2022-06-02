@@ -18,11 +18,13 @@ class AdminModulosPageController extends GetxController {
         route = "/admin/opt/users";
         break;
     }
+    GetStorage().write('path', route);
     Get.toNamed(route);
   }
 
   void signOut() {
     GetStorage().remove('user');
+    GetStorage().write('path', "/register");
     Get.offNamedUntil('/', (route) => false);
   }
 }
