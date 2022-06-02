@@ -11,7 +11,9 @@ import 'package:silva_admin/Pages/3_2_Admin_Reg_Modulos.dart';
 import 'package:silva_admin/Pages/3_3_Admin_Usuarios.dart';
 import 'package:silva_admin/Pages/1_Roles.dart';
 import 'package:silva_admin/Pages/2_2_Superv.dart';
-import 'package:silva_admin/locator.dart';
+import 'package:silva_admin/locatorWeb.dart'
+    if (dart.library.io) 'package:silva_admin/locator.dart';
+
 import 'package:silva_admin/models/user.dart';
 import 'Pages/login.dart';
 import 'Pages/register.dart';

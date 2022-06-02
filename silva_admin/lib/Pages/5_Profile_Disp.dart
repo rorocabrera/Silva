@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:silva_admin/Pages/6_Profile_BioSignUp.dart';
+import 'package:silva_admin/Pages/6_Profile_BioSignUpWeb.dart'
+    if (dart.library.io) 'package:silva_admin/Pages/6_Profile_BioSignUp.dart';
 import 'package:silva_admin/controllers/4_3_Admin_PerfCnt.dart';
 import 'package:silva_admin/Pages/4_3_Admin_Perfiles.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 AdminRegPerfilesController cnt = Get.put(AdminRegPerfilesController());
 
@@ -59,17 +61,20 @@ Widget _buttonLogic(int index) {
                     }
                   },
                   child: Text("Eliminar"))),
-          Container(
-              decoration: BoxDecoration(
-                  color: Colors.red, borderRadius: BorderRadius.circular(10)),
-              margin: EdgeInsets.all(8),
-              width: hereWidth,
-              height: 40,
-              child: ElevatedButton(
-                  onPressed: () {
-                    Get.to(BioSignUp(index));
-                  },
-                  child: Text("Biometrics"))),
+          !kIsWeb
+              ? Container(
+                  decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(10)),
+                  margin: EdgeInsets.all(8),
+                  width: hereWidth,
+                  height: 40,
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.to(BioSignUp(index));
+                      },
+                      child: Text("Biometrics")))
+              : Container()
         ],
       ),
       Row(
