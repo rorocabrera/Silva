@@ -30,6 +30,7 @@ class _AuthActionButtonState extends State<AuthActionButton> {
   BioUser? predictedUser;
 
   Future _signUp(context) async {
+    print("se llama a sign up");
     DatabaseHelper _databaseHelper = DatabaseHelper.instance;
     List predictedData = _mlService.predictedData;
     String cedula = cnt.perfiles[widget.index].cedula ?? '';
@@ -40,7 +41,8 @@ class _AuthActionButtonState extends State<AuthActionButton> {
     );
 
     await _databaseHelper.insert(userToSave);
-    this._mlService.setPredictedData(null);
+    print("database insert");
+    this._mlService.setPredictedData([]);
   }
 
   Future _signIn(context) async {}

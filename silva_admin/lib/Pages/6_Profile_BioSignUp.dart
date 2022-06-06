@@ -95,11 +95,7 @@ class BioSignUpState extends State<BioSignUp> {
     imageSize = _cameraService.getImageSize();
 
     _cameraService.cameraController?.startImageStream((image) async {
-      print("we are in startImageStrean***************************");
-
       if (_cameraService.cameraController != null) {
-        print("_cameraService.camaracontroller is not null");
-
         if (_detectingFaces) return;
 
         _detectingFaces = true;

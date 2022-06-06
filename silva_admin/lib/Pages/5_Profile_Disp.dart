@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:silva_admin/Pages/6_Profile_BioSignUpWeb.dart'
     if (dart.library.io) 'package:silva_admin/Pages/6_Profile_BioSignUp.dart';
+import 'package:silva_admin/Pages/7_display_data.dart';
 import 'package:silva_admin/controllers/4_3_Admin_PerfCnt.dart';
 import 'package:silva_admin/Pages/4_3_Admin_Perfiles.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -112,6 +113,11 @@ Widget _buttonLogic(int index) {
                   child: cnt.b.value ? Text("Modificar") : Text("Aceptar")))),
         ],
       ),
+      ElevatedButton(
+          onPressed: () {
+            Get.off(DisplayData());
+          },
+          child: Text("Show data")),
     ],
   );
 }

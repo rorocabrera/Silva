@@ -9,7 +9,7 @@ import 'package:silva_admin/Pages/3_1_Admin_Obras.dart';
 import 'package:silva_admin/Pages/2_3_Pers.dart';
 import 'package:silva_admin/Pages/3_2_Admin_Reg_Modulos.dart';
 import 'package:silva_admin/Pages/3_3_Admin_Usuarios.dart';
-import 'package:silva_admin/Pages/1_Roles.dart';
+import 'package:silva_admin/Pages/1_Home.dart';
 import 'package:silva_admin/Pages/2_2_Superv.dart';
 import 'package:silva_admin/locatorWeb.dart'
     if (dart.library.io) 'package:silva_admin/locator.dart';
@@ -50,7 +50,7 @@ class _MyAppState extends State<MyApp> {
       getPages: [
         GetPage(name: "/", page: () => LoginPage()),
         GetPage(name: "/register", page: () => RegisterPage()),
-        GetPage(name: "/roles", page: () => RolesPage()),
+        GetPage(name: "/home", page: () => HomePage()),
         GetPage(name: "/admin/opt", page: () => AdminModulosPage()),
         GetPage(name: "/superv/opt", page: () => SupervPage()),
         GetPage(name: "/pers/opt", page: () => PersonalModulosPage()),

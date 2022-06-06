@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:silva_admin/db/databse_helper.dart';
+import 'package:silva_admin/models/biometric_user.dart';
 import 'package:silva_admin/models/perfil.dart';
 import 'package:silva_admin/models/response_api.dart';
 import 'package:silva_admin/providers/perfilesProviders.dart';
@@ -16,6 +18,10 @@ class AdminRegPerfilesController extends GetxController {
   var isFilled = false.obs;
   PerfilesProvider perfilesProvider = PerfilesProvider();
   List<Perfil> perfiles = <Perfil>[].obs;
+  List<BioUser> bioUsers = [];
+
+  void getBioUsers() {}
+
   var b = false
       .obs; //un bolleano para reconocer cambios en el ProfilePage y permitir la modificación
 

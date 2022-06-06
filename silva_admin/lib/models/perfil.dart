@@ -11,6 +11,7 @@ class Perfil {
     this.nombre,
     this.apellido,
     this.telefono,
+    this.biometrics,
   });
 
   String? cedula;
@@ -18,14 +19,15 @@ class Perfil {
   String? nombre;
   String? apellido;
   String? telefono;
+  String? biometrics;
 
   factory Perfil.fromJson(Map<String, dynamic> json) => Perfil(
-        cedula: json["cedula"],
-        email: json["email"],
-        nombre: json["nombre"],
-        apellido: json["apellido"],
-        telefono: json["telefono"],
-      );
+      cedula: json["cedula"],
+      email: json["email"],
+      nombre: json["nombre"],
+      apellido: json["apellido"],
+      telefono: json["telefono"],
+      biometrics: json["biometrics"]);
 
   Map<String, dynamic> toJson() => {
         "cedula": cedula,
@@ -33,6 +35,7 @@ class Perfil {
         "nombre": nombre,
         "apellido": apellido,
         "telefono": telefono,
+        "biometrics": biometrics,
       };
 
   static List<Perfil> fromJsonList(List<dynamic> jsonList) {

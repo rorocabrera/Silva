@@ -54,24 +54,38 @@ class MLService {
     List input = _preProcess(cameraImage, face);
 
     input = input.reshape([1, 112, 112, 3]);
+
     List output = List.generate(1, (index) => List.filled(192, 0));
 
     this._interpreter?.run(input, output);
+    print("Paso this.interpreter.run***********************************");
+
     output = output.reshape([192]);
 
     this._predictedData = List.from(output);
+
+    int i = 0;
+    print(this.predictedData.length);
+    for (var e in this._predictedData) {
+      print(i);
+      print(e);
+      i++;
+    }
   }
 
   Future<BioUser?> predict() async {
     return _searchResult(this._predictedData);
   }
 
+  //viene de setcurrent prediction ?
   List _preProcess(CameraImage image, Face faceDetected) {
     print("pre Processsssssssss***********************************");
     imglib.Image croppedImage = _cropFace(image, faceDetected);
     imglib.Image img = imglib.copyResizeCropSquare(croppedImage, 112);
 
     Float32List imageAsList = imageToByteListFloat32(img);
+    print("Paso image as list***********************************");
+
     return imageAsList;
   }
 
@@ -92,6 +106,7 @@ class MLService {
   }
 
   Float32List imageToByteListFloat32(imglib.Image image) {
+    //viene de Preprocess
     var convertedBytes = Float32List(1 * 112 * 112 * 3);
     var buffer = Float32List.view(convertedBytes.buffer);
     print("**************************************bufferlenght");
@@ -110,7 +125,9 @@ class MLService {
   }
 
   Future<BioUser?> _searchResult(List predictedData) async {
+    print("****************************Before Database");
     DatabaseHelper _dbHelper = DatabaseHelper.instance;
+    print("****************************After Database");
 
     List<BioUser> users = await _dbHelper.queryAllUsers();
     double minDist = 999;
@@ -118,6 +135,9 @@ class MLService {
     BioUser? predictedResult;
 
     for (BioUser u in users) {
+      print("****************************EpATELLOOOOOOO");
+      print(u.modelData);
+      print(u.cedula);
       currDist = _euclideanDistance(u.modelData, predictedData);
       if (currDist <= threshold && currDist < minDist) {
         minDist = currDist;

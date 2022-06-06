@@ -9,23 +9,30 @@ class DatabaseHelper {
   static final _databaseVersion = 1;
 
   static final table = 'users';
-  static final columnId = 'id';
-  static final columnUser = 'user';
-  static final columnPassword = 'password';
+  static final columnId = 'cedula';
   static final columnModelData = 'model_data';
 
   DatabaseHelper._privateConstructor();
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
 
-  static late Database _database;
+  static Database? _database;
+
   Future<Database> get database async {
-    if (_database != null) return _database;
+    print("trying to retrieve database");
+    if (_database != null) {
+      print("database is not null");
+      return _database!;
+    }
+    print("_Database is null");
     _database = await _initDatabase();
-    return _database;
+
+    return _database!;
   }
 
   _initDatabase() async {
+    print("befpr getApplication document directory");
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    print("after getApplication document directory");
     String path = join(documentsDirectory.path, _databaseName);
     return await openDatabase(path,
         version: _databaseVersion, onCreate: _onCreate);
@@ -34,16 +41,16 @@ class DatabaseHelper {
   Future _onCreate(Database db, int version) async {
     await db.execute('''
           CREATE TABLE $table (
-            $columnId INTEGER PRIMARY KEY,
-            $columnUser TEXT NOT NULL,
-            $columnPassword TEXT NOT NULL,
+            $columnId TEXT PRIMARY KEY,
             $columnModelData TEXT NOT NULL
           )
           ''');
   }
 
   Future<int> insert(BioUser user) async {
+    print("trying to insert data");
     Database db = await instance.database;
+    print("after instance.database");
     return await db.insert(table, user.toMap());
   }
 

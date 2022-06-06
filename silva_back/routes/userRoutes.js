@@ -15,5 +15,4 @@ module.exports = (app) => {
     app.get('/api/roles/list', rolController.rolesModelList);
 
 
-
 }

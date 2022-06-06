@@ -36,23 +36,13 @@ class LoginController extends GetxController {
           GetStorage().write('path', "/pers/opt");
           Get.offNamedUntil("/pers/opt", (route) => false);
         } else {
-          GetStorage().write('path', "/roles");
-          goToRolesPage();
+          GetStorage().write('path', "/home");
+          Get.offNamedUntil('/home', (route) => false);
         }
       } else {
         Get.snackbar('Login Faliido', responseApi.message ?? '');
       }
     }
-  }
-
-  void goToHomePage() {
-    GetStorage().write('path', "/home");
-    Get.offNamedUntil('/home', (route) => false);
-  }
-
-  void goToRolesPage() {
-    GetStorage().write('path', "/home");
-    Get.offNamedUntil('/roles', (route) => false);
   }
 
   bool isValidForm(String email, String password) {

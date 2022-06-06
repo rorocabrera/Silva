@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:silva_admin/controllers/1_Roles_cnt.dart';
+import 'package:silva_admin/Widgets/MyAppbar/my_drawer.dart';
+import 'package:silva_admin/controllers/1_HomeCnt.dart';
 import 'package:silva_admin/Widgets/MyAppbar/app_bar.dart';
 import 'package:silva_admin/models/rol.dart';
 
-class RolesPage extends StatelessWidget {
-  RolesController cnt = Get.put(RolesController());
+class HomePage extends StatelessWidget {
+  HomeController cnt = Get.put(HomeController());
   String appBarTxt = "Seleccionar el Módulo";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        drawer: MyDrawer(),
         appBar: MyAppBar(appBarTxt),
         body: Container(
           margin: EdgeInsets.symmetric(vertical: Get.height * 0.17),
