@@ -3,16 +3,26 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:silva_admin/db/databse_helper.dart';
 import 'package:silva_admin/models/biometric_user.dart';
 import 'package:silva_admin/models/perfil.dart';
 import 'package:silva_admin/models/response_api.dart';
 import 'package:silva_admin/providers/perfilesProviders.dart';
 import 'package:http/http.dart' as http;
+import 'package:sqflite/sqflite.dart';
 
 class AdminRegPerfilesController extends GetxController {
   AdminRegPerfilesController() {
     getPerfiles();
+    printshit();
+  }
+
+  printshit() async {
+    var s = await getDatabasesPath();
+    print(s);
+    var h = await getApplicationDocumentsDirectory();
+    print(h);
   }
 
   var isFilled = false.obs;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:silva_admin/Pages/2_1_AdminModulos.dart';
 import 'package:silva_admin/Pages/4_2_Admin_Equipos.dart';
 import 'package:silva_admin/Pages/4_1_Admin_Inventario.dart';
@@ -15,6 +16,7 @@ import 'package:silva_admin/locatorWeb.dart'
     if (dart.library.io) 'package:silva_admin/locator.dart';
 
 import 'package:silva_admin/models/user.dart';
+import 'package:sqflite/sqflite.dart';
 import 'Pages/login.dart';
 import 'Pages/register.dart';
 
@@ -22,6 +24,7 @@ User userSession = User.fromJson(GetStorage().read('user') ?? {});
 String initialRoute = GetStorage().read('path') ?? '/';
 void main() async {
   await GetStorage.init();
+
   setupServices();
   runApp(MyApp());
 }
