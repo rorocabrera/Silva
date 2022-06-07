@@ -11,6 +11,7 @@ User.findById = (id, result) => {
             U.email,
             U.name,
             U.level,
+            U.updated_at,
             U.password,
             CONCAT('[', GROUP_CONCAT(json_object(
                 'id', CONVERT(R.id, char), 'name', R.name, 'route', R.route )), ']') AS roles
@@ -59,6 +60,7 @@ User.findByEmail = (email, result) => {
         U.email,
         U.name,
         U.level,
+        U.updated_at,
         U.password,
         CONCAT('[', GROUP_CONCAT(json_object(
             'id', CONVERT(R.id, char), 'name', R.name, 'route', R.route )), ']') AS roles
@@ -129,7 +131,7 @@ User.create = async (user, result) => {
         (err, res) => {
             if (err) {
                 console.log('Error: ', err)
-                result(err, null); 
+                result(err, null);
             }
             else {
                 console.log('Id del nuevo usuario: ', res.insertId);

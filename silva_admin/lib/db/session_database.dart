@@ -1,4 +1,5 @@
 import 'package:silva_admin/models/session_db_model.dart';
+import 'package:silva_admin/models/user.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -32,12 +33,13 @@ class SessionDatabase {
     await db.execute(''' CREATE TABLE 
     $tableUsers (
       ${UserField.id} $intType,
-       ${UserField.level} $intType,
+      ${UserField.level} $intType,
       ${UserField.email} $textType,
       ${UserField.nombre} $textType,
       ${UserField.password} $textType,
-      ${UserField.created_at} $textType,
-      ${UserField.modified_at} $textType
+      ${UserField.roles} $textType,
+      ${UserField.updated_at} $textType
+
 
     ) ''');
 
@@ -49,39 +51,8 @@ class SessionDatabase {
       ${PerfilesField.biometrics} $textType,
       ${PerfilesField.email} $textType,
       ${PerfilesField.telefono} $textType,
-      ${PerfilesField.created_at} $textType,
-      ${PerfilesField.modified_at} $textType
-    ) ''');
+      ${PerfilesField.updated_at} $textType
 
-    await db.execute(''' CREATE TABLE 
-    $tableRoles (
-      ${RolesField.id} $intType,
-      ${RolesField.nombre} $textType,
-      ${RolesField.created_at} $textType,
-      ${RolesField.modified_at} $textType
-    ) ''');
-
-    await db.execute(''' CREATE TABLE 
-    $tableModulos (
-      ${ModulosField.id} $intType,
-      ${ModulosField.id_rol} $intType,
-      ${ModulosField.nombre} $textType,
-      ${ModulosField.created_at} $textType,
-      ${ModulosField.modified_at} $textType,
-      FOREIGN KEY (${ModulosField.id_rol})
-      REFERENCES $tableRoles(${RolesField.id})
-    ) ''');
-
-    await db.execute(''' CREATE TABLE 
-    $tableUHR (
-      ${UHRField.id_user} $intType,
-      ${UHRField.id_rol} $intType,
-      ${UHRField.created_at} $textType,
-      ${UHRField.modified_at} $textType
-      FOREIGN KEY (${UHRField.id_user})
-      REFERENCES $tableUsers(${UserField.id})
-      FOREIGN KEY (${UHRField.id_rol})
-      REFERENCES $tableRoles(${RolesField.id})
     ) ''');
   }
 
@@ -92,5 +63,15 @@ class SessionDatabase {
   Future close() async {
     final db = await instance.database;
     db.close();
+  }
+
+  Future<bool> insertUser(User user) async {
+    final db = await instance.database;
+    int t = await db.insert(tableUsers, user.toJson());
+    if (t != 0) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

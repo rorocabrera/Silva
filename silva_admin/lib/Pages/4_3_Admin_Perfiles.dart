@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:silva_admin/Pages/5_Profile_New.dart';
 import 'package:silva_admin/Pages/5_Profile_Disp.dart';
+import 'package:silva_admin/Widgets/MyAppbar/my_drawer.dart';
 import 'package:silva_admin/controllers/4_3_Admin_PerfCnt.dart';
 import 'package:silva_admin/Widgets/MyAppbar/app_bar.dart';
 import 'package:silva_admin/models/perfil.dart';
@@ -18,6 +19,7 @@ class AdminRegPerfPage extends StatelessWidget {
 
     return Scaffold(
         appBar: MyAppBar("Perfiles"),
+        drawer: MyDrawer(),
         body: cnt.isFilled.value
             ? Center(
                 child: CircularProgressIndicator(),

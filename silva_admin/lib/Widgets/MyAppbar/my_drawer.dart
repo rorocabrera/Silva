@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:silva_admin/Widgets/MyAppbar/main_controller.dart';
+import 'package:path/path.dart';
+import 'package:silva_admin/controllers/main_controller.dart';
+import 'package:sqlite_viewer/sqlite_viewer.dart';
 
 class MyDrawer extends StatelessWidget {
   MyDrawer({Key? key}) : super(key: key);
-  MainController mainCnt = Get.put(MainController());
+  MainController mainCnt = Get.find();
   @override
   Widget build(BuildContext context) {
-    return _myDrawer();
+    return _myDrawer(context); //context only for Dblist debugging
   }
 
-  Widget _myDrawer() {
+  Widget _myDrawer(BuildContext context) {
     return Drawer(
         child: SingleChildScrollView(
       child: Column(
@@ -20,6 +22,8 @@ class MyDrawer extends StatelessWidget {
           _roles(),
           Divider(),
           _logOut(),
+          Divider(),
+          _databaseViewer(context), //Only for Dev
         ],
       ),
     ));
@@ -45,6 +49,17 @@ class MyDrawer extends StatelessWidget {
       leading: Icon(Icons.logout),
       onTap: () {
         mainCnt.signOut();
+      },
+    );
+  }
+
+  Widget _databaseViewer(BuildContext context) {
+    return ListTile(
+      title: Text("Salir"),
+      leading: Icon(Icons.data_object),
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (_) => DatabaseList()));
       },
     );
   }

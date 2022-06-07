@@ -12,6 +12,7 @@ import 'package:silva_admin/Pages/3_2_Admin_Reg_Modulos.dart';
 import 'package:silva_admin/Pages/3_3_Admin_Usuarios.dart';
 import 'package:silva_admin/Pages/1_Home.dart';
 import 'package:silva_admin/Pages/2_2_Superv.dart';
+import 'package:silva_admin/controllers/main_controller.dart';
 import 'package:silva_admin/locatorWeb.dart'
     if (dart.library.io) 'package:silva_admin/locator.dart';
 
@@ -49,6 +50,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Nomina',
       initialRoute: userSession.id != null ? initialRoute : "/",
+      initialBinding: BindingsBuilder(() => {Get.put(MainController())}),
       theme: ThemeData(primarySwatch: Colors.blueGrey),
       getPages: [
         GetPage(name: "/", page: () => LoginPage()),
