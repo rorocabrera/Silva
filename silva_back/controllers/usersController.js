@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 const keys = require('../config/keys');
 const Rol = require('../models/rol');
 
+var CryptoJS = require("crypto-js");
+
 module.exports = {
 
     getUser(req, res) {
@@ -39,7 +41,7 @@ module.exports = {
 
         User.findByEmail(email, async (err, myUser) => {
             console.log('error ', err);
-            console.log('usuario ', myUser);
+
 
             if (err) {
                 return res.status(501).json({
@@ -55,8 +57,11 @@ module.exports = {
                 });
             }
 
-            const isPasswordValid = await bcrypt.compare(password, myUser.password);
-
+            // const isPasswordValid = await bcrypt.compare(password, myUser.password);
+            hash = CryptoJS.AES.decrypt(myUser.password, process.env.KEY).toString(CryptoJS.enc.Utf8);
+            console.log(hash);
+            console.log(password);
+            const isPasswordValid = hash == password;
             if (isPasswordValid) {
                 const token = jwt.sign({ id: myUser.id, email: myUser.email }, keys.secretOrKey, {});
                 const data = {
@@ -64,9 +69,12 @@ module.exports = {
                     name: myUser.name,
                     level: myUser.level,
                     email: myUser.email,
+                    updated_at: myUser.updated_at,
                     session_token: `JWT ${token}`,
+                    password: myUser.password,
                     roles: JSON.parse(myUser.roles)
                 }
+                console.log(data);
 
                 return res.status(201).json({
                     success: true,

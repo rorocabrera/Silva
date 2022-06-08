@@ -55,8 +55,8 @@ class MyDrawer extends StatelessWidget {
 
   Widget _databaseViewer(BuildContext context) {
     return ListTile(
-      title: Text("Salir"),
-      leading: Icon(Icons.data_object),
+      title: Text("Inspect database (dev)"),
+      leading: Icon(Icons.build),
       onTap: () {
         Navigator.push(
             context, MaterialPageRoute(builder: (_) => DatabaseList()));

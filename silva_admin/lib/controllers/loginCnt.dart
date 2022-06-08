@@ -1,5 +1,6 @@
 import 'dart:io';
-
+import 'package:encrypt/encrypt.dart' as encrypt;
+import 'package:silva_admin/Utils/cryptojs_aes_encryption_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -7,9 +8,9 @@ import 'package:silva_admin/Pages/register.dart';
 import 'package:silva_admin/controllers/main_controller.dart';
 import 'package:silva_admin/db/session_database.dart';
 import 'package:silva_admin/models/response_api.dart';
+import 'package:silva_admin/models/session_db_model.dart';
 import 'package:silva_admin/providers/usersProviders.dart';
 import 'package:sqflite/sqlite_api.dart';
-
 import '../models/user.dart';
 
 class LoginController extends GetxController {
@@ -38,9 +39,9 @@ class LoginController extends GetxController {
         print('Response Api:  ${responseApi.toJson()}');
 
         if (responseApi.success == true) {
+          mainCnt.getAvRoles();
           GetStorage().write('user', responseApi.data);
-          User user = User.fromJson(responseApi.data);
-          _addOfflineUser(user);
+          _addOfflineUser(responseApi.data);
           var roles = responseApi.toJson()["data"]["roles"];
           print(roles);
           if (roles.length == 1) {
@@ -54,8 +55,9 @@ class LoginController extends GetxController {
           Get.snackbar('Login Faliido', responseApi.message ?? '');
         }
       } on SocketException {
-        mainCnt.serverAct.value = false;
-        _offlineLogin();
+        mainCnt.serverAct.value = 0;
+        _offlineLogin(email, password);
+        mainCnt.searchWifi();
       }
     }
   }
@@ -79,12 +81,29 @@ class LoginController extends GetxController {
     return true;
   }
 
-  _offlineLogin() {}
+  _offlineLogin(String email, String Password) async {
+    UserDb? userDb = await SessionDatabase.instance.readUser(email);
+    if (userDb != null) {
+      String decrypted = decryptAESCryptoJS(
+          userDb.password, "G-KaPdSgVkYp3s6v9y/B?E(H+MbQeThW");
+      print(decrypted);
+      print(Password);
+      if (decrypted == Password) {
+        GetStorage().write('path', "/home");
+        Get.offNamedUntil('/home', (route) => false);
+      } else {
+        Get.snackbar('Login Faliido', 'Passwords no coinciden');
+      }
+    } else {
+      Get.snackbar('Login Faliido', 'Usuario no encontrado');
+    }
+  }
 
-  _addOfflineUser(User data) async {
+  _addOfflineUser(dynamic data) async {
     print("we are in _addoflineUser");
     _syncOfflineUserDb();
-    bool t = await SessionDatabase.instance.insertUser(data);
+    UserDb userDb = UserDb.fromJsonServer(data);
+    bool t = await SessionDatabase.instance.insertUser(userDb);
     print(t);
   }
 

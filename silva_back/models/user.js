@@ -1,5 +1,7 @@
+
 const db = require('../config/config');
 const bcrypt = require('bcryptjs');
+var CryptoJS = require("crypto-js");
 
 const User = {};
 
@@ -89,7 +91,7 @@ User.findByEmail = (email, result) => {
                 result(err, null);
             }
             else {
-                console.log('Usuario obtenido:', user[0]);
+
                 result(null, user[0]);
             }
         }
@@ -98,9 +100,10 @@ User.findByEmail = (email, result) => {
 }
 
 User.create = async (user, result) => {
-
-    const hash = await bcrypt.hash(user.password, 10);
-
+    console.log(process.env.KEY + 'la llave');
+    // const hash = await bcrypt.hash(user.password, 10);
+    const hash = CryptoJS.AES.encrypt(user.password, process.env.KEY).toString();
+    console.log(hash);
     const sql = `
         INSERT INTO 
             users(

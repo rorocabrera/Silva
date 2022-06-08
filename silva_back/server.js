@@ -1,3 +1,5 @@
+
+
 const express = require('express');
 
 const app = express();
@@ -36,7 +38,6 @@ app.set('port', port);
 //llamada a las rutas
 usersRoutes(app);
 perfilesRoutes(app);
-
 
 server.listen(port, '192.168.0.111' || 'localhost', () =>
     console.log('Aplicación escuchando en puerto ' + port));

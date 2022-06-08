@@ -32,7 +32,7 @@ class SessionDatabase {
 
     await db.execute(''' CREATE TABLE 
     $tableUsers (
-      ${UserField.id} $intType,
+      ${UserField.id} $textType,
       ${UserField.level} $intType,
       ${UserField.email} $textType,
       ${UserField.nombre} $textType,
@@ -65,13 +65,27 @@ class SessionDatabase {
     db.close();
   }
 
-  Future<bool> insertUser(User user) async {
+  Future<bool> insertUser(UserDb user) async {
     final db = await instance.database;
     int t = await db.insert(tableUsers, user.toJson());
     if (t != 0) {
       return true;
     } else {
       return false;
+    }
+  }
+
+  Future<UserDb?> readUser(String email) async {
+    final db = await instance.database;
+    final map = await db.query(tableUsers,
+        columns: UserField.values,
+        where: '${UserField.email} = ?',
+        whereArgs: [email]);
+
+    if (map.isNotEmpty) {
+      return UserDb.fromJsonPhone(map.first);
+    } else {
+      return null;
     }
   }
 }

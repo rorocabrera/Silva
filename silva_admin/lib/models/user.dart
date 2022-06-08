@@ -7,14 +7,15 @@ User userFromJson(String str) => User.fromJson(json.decode(str));
 String userToJson(User data) => json.encode(data.toJson());
 
 class User {
-  User(
-      {this.id,
-      this.email,
-      this.name,
-      this.level,
-      this.password,
-      this.sessionToken,
-      this.roles});
+  User({
+    this.id,
+    this.email,
+    this.name,
+    this.level,
+    this.password,
+    this.sessionToken,
+    this.roles,
+  });
 
   String? id;
   String? email;
